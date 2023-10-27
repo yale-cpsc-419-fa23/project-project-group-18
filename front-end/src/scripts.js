@@ -3,7 +3,7 @@ let currentPlayer = 'X';
 
 async function makeMove(index) {
     console.log(index)
-    const response = await fetch('http://your-backend-url/api/make-move', {
+    const response = await fetch('http://172.27.105.218:5001/tasks', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
