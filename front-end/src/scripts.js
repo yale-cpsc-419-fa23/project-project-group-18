@@ -1,17 +1,16 @@
 let board = Array(9).fill(null);
 let currentPlayer = 'X';
 
-async function makeMove(index) {
-    console.log(index)
-    const response = await fetch('http://172.27.105.218:5001/tasks', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ index, player: currentPlayer }),
-        });
+var socket = io.connect('http://192.168.4.48:5001');
 
-    const data = await response.json();
+socket.on('message', function(data) {
+    console.log(data);  // Log the data received from the server
+});
+
+window.makeMove = function(index) {
+
+    console.log(JSON.stringify(JSON.stringify({ index, player: currentPlayer, room:'room1'})))
+    socket.emit('join', {username: 'John', room: 'room1', index, player: currentPlayer});
     
     if (board[index] === null) {
             board[index] = currentPlayer;
