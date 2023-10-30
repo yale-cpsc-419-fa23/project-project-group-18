@@ -1,29 +1,32 @@
-from flask import jsonify, request
-from run_server import app
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+import flask_socketio
 
-tasks = [
-    {'id': 1, 'title': 'Learn Flask', 'done': False},
-    {'id': 2, 'title': 'Build a REST API', 'done': False},
-]
+app = Flask(__name__)
+CORS(app)
+socketio = flask_socketio.SocketIO(app, cors_allowed_origins="*")
 
-@app.route('/tasks', methods=['GET']) 
-def get_tasks():
-    return jsonify({'tasks': tasks})
 
-@app.route('/tasks/<int:task_id>', methods=['GET'])
-def get_task(task_id):
-    task = next((task for task in tasks if task['id'] == task_id), None)
-    if task is None:
-        return jsonify({'error': 'Task not found'}), 404
-    return jsonify({'task': task})
 
-@app.route('/tasks', methods=['POST'])
-def create_task():
-    new_task = request.json
-    print(new_task)
-    tasks.append(new_task)
-    return jsonify({'task': new_task}), 201
+@socketio.on('join')
+def on_join(data):
+    room = data['room']
+    username = data['username']
+    flask_socketio.join_room(room)  
+    socketio.send(f"{username} have joined the room: {room}", room=room)  
 
-@app.route('/operation', methods=['POST'])
-def do_operation():
-    new_operation = request.json
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    
+    flask_socketio.leave_room(room)
+    socketio.send(f'{username} has left the room.', room=room)
+
+@socketio.on('in_game_action')
+def handle_player_action(data):
+    username = data['username']
+    room = data['room']
+    action = data['action']
+    
+    socketio.send(f'{username} takes action:{action}', room=room)
