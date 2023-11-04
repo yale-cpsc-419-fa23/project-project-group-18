@@ -74,3 +74,7 @@ class TicTacToe(Game):
     
     def get_player_piece_map(self):
         return self.player_map
+    
+    def game_over(self):
+        self.current_state = [['', '', ''], ['', '', ''], ['', '', '']]
+        self.current_turn = 'O'
