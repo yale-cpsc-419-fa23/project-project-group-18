@@ -20,10 +20,12 @@ function fetch_rooms() {
 
 function fetch_leader_board() {
     $.get(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/leaderboard`, function(data) {
+        console.log(data)
         if (data && data.length > 0) {
             const leaderboard = $('#leaderboard');
-            leaderboard.html('<table><h2>Leader Board</h2><tr><th>Player ID</th><th>Score</th></tr></table>');
+            leaderboard.html('<table><tr><th id="leaderboard-title" colspan="2">Leader Board</th></tr></table>');
             const table = leaderboard.find('table');
+            table.append('<tr><th>Player ID</th><th>Score</th></tr>')
             data.forEach(row => {
                 table.append(`<tr><td>${row.player_id}</td><td>${row.score}</td></tr>`);
             });
@@ -77,7 +79,7 @@ function join_room(room_id) {
 
 function set_up_lobby() {
     fetch_rooms();
-    fetch_leader_board()
+    fetch_leader_board();
     window.setInterval(fetch_rooms, 5000)
     let player_id = get_cookie('player_id');
     if (player_id) {
