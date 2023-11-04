@@ -1,4 +1,6 @@
 from enum import Enum
+import random
+
 
 class GameState(Enum):
     WAITING = 1
@@ -6,13 +8,13 @@ class GameState(Enum):
     
 
 class GameRoom:
-    def __init__(self, room_id):
-        self.room_id = room_id
+    def __init__(self, id):
+        self.id = id
         self.__player_count = 0
         self.__player_set = set()
         self.__max_player_count = 0
         self.__game_state = GameState.WAITING
-        print("Game room {room_id} created.")
+        print(f"Game room {id} created.")
     
     def join_player(self, player):
         if(self.is_join_avilable()):
@@ -39,26 +41,36 @@ class GameRoom:
             return False
         else:
             return True
+    
+    def to_json(self):
+        return {
+            "id": self.id,
+            "player_count": self.__player_count
+        }
 
 class GameRoomManager:
     def __init__(self):
         self.rooms = {}  
         self.room_count = 0  
 
-    def create_room(self, room_id):
-        # 确保room_id不在字典中，避免覆盖
-        if room_id not in self.rooms:
-            # 创建Room实例并添加到字典中
-            self.rooms[room_id] = GameRoom(room_id)
-            # 房间数量加1
-            self.room_count += 1
-            return True
-        else:
-            print(f"Room: {room_id} already existed.")
-            return False
+    def get_room_list(self):
+        room_list = list(self.rooms.values())
+        return room_list
+
+    def create_new_room(self):
+        new_room_id = self.generate_room_id()
+        while new_room_id in self.rooms:
+            new_room_id = self.generate_room_id()
+        
+        
+        self.rooms[new_room_id] = GameRoom(new_room_id)
+            
+        self.room_count += 1
+        return new_room_id
+
     
     def remove_room(self, room_id):
-        # 如果成功删除，房间数量减1
+        
         if room_id in self.rooms:
             del self.rooms[room_id]
             self.room_count -= 1
@@ -74,7 +86,11 @@ class GameRoomManager:
                 return True
             else:
                 return False
-            
+    
+    def generate_room_id(self):
+        room_number = random.randint(100000, 999999)
+        return str(room_number)
+
 
 
     

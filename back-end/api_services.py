@@ -1,3 +1,4 @@
+from model import GameRoomManager
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
@@ -6,7 +7,22 @@ app = Flask(__name__)
 CORS(app)
 socketio = flask_socketio.SocketIO(app, cors_allowed_origins="*")
 
+room_manager = GameRoomManager()
+player_manager = {}
 
+
+
+@app.route('/roomlist', methods=['GET'])
+def get_room_list():
+    room_list = room_manager.get_room_list()
+    json_list = []
+    for room in room_list:
+        json_list.append(room.to_json())
+    
+    return jsonify(json_list)
+        
+        
+   
 
 @socketio.on('join')
 def on_join(data):
