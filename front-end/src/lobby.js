@@ -8,7 +8,7 @@ function fetch_rooms() {
         roomList.empty();
         rooms.forEach(room => {
             console.log(room)
-            const listItem = $(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button class="join-button" data-room-id="${room.room_id}">Join</button></li>`);
+            const listItem = $(`<li>Room ID: ${room.room_id}, Players: ${room.player_count}/${room.max_player_count} <button class="join-button" data-room-id="${room.room_id}">Join</button></li>`);
             roomList.append(listItem);
             listItem.find('.join-button').on('click', function() {
                 const roomId = $(this).data('room-id');
@@ -79,6 +79,7 @@ function set_up_lobby() {
     fetch_rooms();
     fetch_leader_board()
     window.setInterval(fetch_rooms, 5000)
+    window.setInterval(fetch_leader_board, 60000)
     let player_id = get_cookie('player_id');
     if (player_id) {
         console.log('player_id exists:', player_id);
