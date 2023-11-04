@@ -24,8 +24,10 @@ function initialize() {
         });
         $(this).addClass('disabled');
     });
+    $("#leave-button").on('click', leave_room);
     player_id = get_cookie("player_id");
     room_id = get_cookie("room_id");
+    $('#room_id').html("Room ID: " + room_id);
     socket = io.connect(SERVER_ADDRESS.IP + ':' + SERVER_ADDRESS.PORT);
     socket.emit('joinroom', {player_id: player_id, room_id: room_id});
     socket.on('joinroom_message', (data) => {
@@ -36,7 +38,6 @@ function initialize() {
         $('#message').html(data.message);
         currentPiece = data.piece_map[player_id];
         opponentPiece = currentPiece == 'X' ? 'O' : 'X';
-        console.log(currentPiece)
         run();
     });
 }
@@ -45,7 +46,7 @@ function run() {
     socket.on('turnstart_message', (data) => {
         if (data.turn == currentPiece) {
             enable_cell_click_events();
-            $('#message').html(data.message);
+            $('#message').html(data.message + ", make a move.");
         }
         else
             $('#message').html(data.message + ", waiting for opponent...");
@@ -53,7 +54,7 @@ function run() {
     socket.on('turnend_message', (data) => {
         update_state(data)
     })
-    socket.on('over', (data) => {
+    socket.on('gameover_message', (data) => {
         end_game(data)
     })
 }
@@ -73,10 +74,16 @@ function update_state(data) {
 function end_game(data) {
     const winner = data.winner
     if (winner == player_id)
-        $('#message').html("You lose!");
-    else
         $('#message').html("You Win!");
+    else
+        $('#message').html("You Lose!");
     disable_cell_click_events();
+    $('#leave-button').css('display', 'block');
+}
+
+function leave_room() {
+    socket.disconnect();
+    window.location.href = 'lobby.html';
 }
 
 function disable_cell_click_events() {

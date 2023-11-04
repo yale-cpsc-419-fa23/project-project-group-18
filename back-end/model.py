@@ -6,16 +6,20 @@ from game import TicTacToe
 class GameState(Enum):
     WAITING = 1
     ONGOING = 2
+
+game_type_mapping = {
+    "tic-tac-toe": TicTacToe,
+}
     
 
 class GameRoom:
-    def __init__(self, id):
+    def __init__(self, id, type):
         self.id = id
         self.__player_count = 0
         self.__player_list = []
         self.__max_player_count = 2
         self.__game_state = GameState.WAITING
-        self.game = TicTacToe()
+        self.game = game_type_mapping[type]()
         print(f"Game room {id} created.")
     
     def join_player(self, player):
@@ -84,13 +88,13 @@ class GameRoomManager:
             return self.rooms[room_id]
         print(f"No room {room_id}")
 
-    def create_new_room(self):
+    def create_new_room(self, game_type):
         new_room_id = self.generate_room_id()
         while new_room_id in self.rooms:
             new_room_id = self.generate_room_id()
         
         
-        self.rooms[new_room_id] = GameRoom(new_room_id)
+        self.rooms[new_room_id] = GameRoom(new_room_id, game_type)
             
         self.room_count += 1
         return new_room_id

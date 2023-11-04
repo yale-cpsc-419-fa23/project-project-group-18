@@ -1,28 +1,26 @@
-// Mock data
-var mock_rooms = [
-    {id: "0001", players: 2},
-    {id: "0002", players: 3},
-];
-
-const SERVER_IP = '192.168.4.48'
-const PORT = '5001'
+import {SERVER_ADDRESS} from './global.js'
 
 function fetch_rooms() {
     // also receive PlayerID, and store it somewhere,
-    $.get(`http://${SERVER_IP}:${PORT}/roomlist`, function(rooms) {
+    $.get(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/roomlist`, function(rooms) {
         console.log(rooms)
         const roomList = $('#room-list');
         roomList.empty();
         rooms.forEach(room => {
             console.log(room)
-            roomList.append(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button onclick="join_room(${room.room_id})">Join</button></li>`);
+            const listItem = $(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button class="join-button" data-room-id="${room.room_id}">Join</button></li>`);
+            roomList.append(listItem);
+            listItem.find('.join-button').on('click', function() {
+                const roomId = $(this).data('room-id');
+                join_room(roomId);
+            });
         });
     });
 }
 
 
 function create_player() {
-    $.get(`http://${SERVER_IP}:${PORT}/newplayer`, function(response) {
+    $.get(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/newplayer`, function(response) {
         console.log(response.message)
         let player_id = response.player_id
         console.log("player id:", player_id)
@@ -37,7 +35,7 @@ function create_room() {
     let player_id = get_cookie('player_id');
     let game_type = $('#game-list').val();
     console.log(game_type);
-    $.post(`http://${SERVER_IP}:${PORT}/createroom`, { player_id: player_id, game_type: game_type }, function(response) {
+    $.post(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/createroom`, { player_id: player_id, game_type: game_type }, function(response) {
         let room_id = response.room_id
         document.cookie = `room_id=${room_id}`;
         jump_to_game()
@@ -53,7 +51,7 @@ function jump_to_game() {
 function join_room(room_id) {
     console.log(room_id)
     let player_id = get_cookie('player_id')
-    $.post(`http://${SERVER_IP}:${PORT}/joinroom`, { player_id: player_id, room_id: room_id}, function(response) {
+    $.post(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/joinroom`, { player_id: player_id, room_id: room_id}, function(response) {
         document.cookie = `room_id=${room_id}`;
         alert('Joined room ' + room_id);
         jump_to_game()
@@ -70,6 +68,7 @@ function set_up_lobby() {
         console.log('player_id does not exist\n create new player from server');
         create_player();
     }
+    $("#creat-room-button").on('click', create_room);
 }
 
 
@@ -84,7 +83,6 @@ function get_cookie(name) {
     }
     return null;
 }
-
 
 
 // Fetch the initial list of rooms
