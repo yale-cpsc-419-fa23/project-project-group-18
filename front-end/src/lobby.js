@@ -15,7 +15,7 @@ function fetch_rooms() {
         roomList.empty();
         rooms.forEach(room => {
             console.log(room)
-            roomList.append(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button onclick="joinRoom(${room.id})">Join</button></li>`);
+            roomList.append(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button onclick="join_room(${room.room_id})">Join</button></li>`);
         });
     });
 }
@@ -33,29 +33,27 @@ function create_player() {
 
 
 function create_room() {
-    // send player_id, 
-    // receive room_id,
-    // navigate to room page,
-    // store room_id, room_state
     console.log("create")
     let player_id = get_cookie('player_id');
     $.post(`http://${SERVER_IP}:${PORT}/createroom`, { player_id: player_id }, function(response) {
-        console.log(response)
         let room_id = response.room_id
-        document.cookie = `player_id=${player_id};room_id=${room_id}`
-        console.log(room_id)
-        jump_to_game(room_id)
+        document.cookie = `room_id=${room_id}`;
+        jump_to_game()
     });
 }
 
-function jump_to_game(room_id) {
-    console.log("jump to new room: ", room_id)
+function jump_to_game() {
+    console.log("jump to game room: ")
+    window.location.href = 'tictactoe.html';
 }
 
 
 function join_room(room_id) {
-    $.post(`http://${SERVER_IP}:${PORT}/join-room`, { player_id: player_id, room_id: room_id}, function() {
+    console.log(room_id)
+    let player_id = get_cookie('player_id')
+    $.post(`http://${SERVER_IP}:${PORT}/joinroom`, { player_id: player_id, room_id: room_id}, function(response) {
         alert('Joined room ' + room_id);
+        jump_to_game()
     });
 }
 
