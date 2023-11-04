@@ -73,7 +73,9 @@ function update_state(data) {
 
 function end_game(data) {
     const winner = data.winner
-    if (winner == player_id)
+    if (winner == "")
+        $('#message').html("Tie!");
+    else if (winner == player_id)
         $('#message').html("You Win!");
     else
         $('#message').html("You Lose!");
