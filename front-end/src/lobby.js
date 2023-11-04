@@ -52,10 +52,14 @@ function join_room(room_id) {
     console.log(room_id)
     let player_id = get_cookie('player_id')
     $.post(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/joinroom`, { player_id: player_id, room_id: room_id}, function(response) {
-        document.cookie = `room_id=${room_id}`;
-        alert('Joined room ' + room_id);
-        jump_to_game()
-    });
+        document.cookie = 'room_id=' + response.room_id;
+        if (response.success) {
+            alert('Joined room ' + response.room_id);
+            jump_to_game();
+        }
+        else
+            alert(response.message);
+    })
 }
 
 function set_up_lobby() {
