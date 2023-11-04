@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
 import uuid
+from db_services import top_n_players
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -31,6 +32,15 @@ def get_room_list():
     for room in room_list:
         json_list.append(room.to_json())
     
+    return jsonify(json_list)
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leader_board():
+    result = top_n_players(10)
+    json_list = []
+    for row in result:
+        json_list.append({'player_id':row[0], 'score':row[1]})
+
     return jsonify(json_list)
         
 @app.route('/createroom', methods=['POST'])
