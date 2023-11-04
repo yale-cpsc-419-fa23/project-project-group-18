@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 class Game(ABC):
-    def __init__(self, room_id):
-        self.room_id = room_id
+    def __init__(self):
+        
         self.players = []
 
     def add_player(self, player):
@@ -13,9 +13,6 @@ class Game(ABC):
         # get move information, update state
         pass
     
-    @abstractmethod
-    def update_state(self):
-        pass
     
     @abstractmethod
     def check_winner(self):
@@ -24,8 +21,8 @@ class Game(ABC):
 
 
 class TicTacToe(Game):
-    def __init__(self, room_id):
-        super().__init__(room_id)
+    def __init__(self):
+        super().__init__()
         self.current_state = [['', '', ''], ['', '', ''], ['', '', '']]
 
     def set_players(self, player1, player2):
