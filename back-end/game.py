@@ -27,13 +27,13 @@ class TicTacToe(Game):
 
     def set_players(self, player1, player2):
         self.player_map = {
-            player1 : 'X',
-            player2 : 'O'
+            player1 : 'O',
+            player2 : 'X'
         }
         
         self.piece_map = {
-            'X' : player1,
-            'O' : player2
+            'O' : player1,
+            'X' : player2
         }
     
     def make_move(self, player, index):
