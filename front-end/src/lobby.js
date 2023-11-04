@@ -62,6 +62,7 @@ function join_room(room_id) {
 
 function set_up_lobby() {
     fetch_rooms();
+    window.setInterval(fetch_rooms, 5000)
     let player_id = get_cookie('player_id');
     if (player_id) {
         console.log('player_id exists:', player_id);
