@@ -27,6 +27,7 @@ function initialize() {
     $("#leave-button").on('click', leave_room);
     player_id = get_cookie("player_id");
     room_id = get_cookie("room_id");
+    $('#room_id').html("Room ID: " + room_id);
     socket = io.connect(SERVER_ADDRESS.IP + ':' + SERVER_ADDRESS.PORT);
     socket.emit('joinroom', {player_id: player_id, room_id: room_id});
     socket.on('joinroom_message', (data) => {
@@ -77,7 +78,7 @@ function end_game(data) {
     else
         $('#message').html("You Lose!");
     disable_cell_click_events();
-    $('#leave').css('display', 'block');
+    $('#leave-button').css('display', 'block');
 }
 
 function leave_room() {
