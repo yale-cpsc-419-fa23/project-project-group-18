@@ -5,7 +5,7 @@ import sqlite3
 DB_PATH = 'database.sqlite'
 
 
-def top_n_players(n=10):
+def top_n_players(n=10)->list[tuple]:
     connection, cursor = connect_db()
     params = {
         'num' : n,
@@ -13,8 +13,8 @@ def top_n_players(n=10):
     query = '''
     SELECT player_id, score
     FROM scores
-    ORDER BY score
-    LIMIT =:num;
+    ORDER BY score DESC
+    LIMIT :num;
     '''
     cursor.execute(query, params)
     result = cursor.fetchall()
