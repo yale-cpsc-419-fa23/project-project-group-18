@@ -39,8 +39,8 @@ class TicTacToe(Game):
             'O' : player2
         }
     
-    def make_move(self, player, row, col):
-        pass
+    def make_move(self, player, index):
+        self.current_state[index / 3][index % 3] = self.player_map[player]
     
     def check_move_validate(self, player, move):
         return True
@@ -49,8 +49,10 @@ class TicTacToe(Game):
         board = self.current_state
         # Check rows and columns
         for i in range(3):
-            if board[i][0] == board[i][1] == board[i][2] != '' or board[0][i] == board[1][i] == board[2][i] != '':
-                return board[i][0] or board[0][i]
+            if board[i][0] == board[i][1] == board[i][2] != '':
+                return self.piece_map[board[i][0]]
+            if board[0][i] == board[1][i] == board[2][i] != '':
+                return self.piece_map[board[0][i]]
         # Check diagonals
         if board[0][0] == board[1][1] == board[2][2] != '' or board[0][2] == board[1][1] == board[2][0] != '':
             return self.piece_map[board[1][1]]
