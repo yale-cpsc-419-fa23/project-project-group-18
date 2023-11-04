@@ -95,10 +95,27 @@ def player_make_move(data):
     print(f"{player_id}'s move is index:{move}")
     turn_end(room_id, player_id, move)
     
-    if check_game_over():
+    winner = check_game_over(room_id)
+    if winner:
+        socketio.emit('gameover_message', {'winner': player_id, 'message': f"{player_id} wins the game."}, room=room_id)
+        game_over(room_id)
         return
     
     turn_start(room_id)
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected', request.sid)
+    player_id = sid_manager[request.sid]
+    room_id = player_manager[player_id]
+    room_manager.player_leave_room(player_id, room_id)
+    if player_id in player_manager:
+        del player_manager[player_id]
+    if request.sid in sid_manager:
+        del sid_manager[request.sid]
+
+
+
 
 def check_game_start(room_id):
     room = room_manager.get_room(room_id)
@@ -126,8 +143,22 @@ def turn_end(room_id, player_id, move):
     else:
         print(f"No such a room:{room_id}.")
 
-def check_game_over():
-    return
+def check_game_over(room_id):
+    room = room_manager.get_room(room_id)
+    if room:
+        winner = room.game.check_winner()
+        if winner:
+            print(f"{winner} wins the game.")
+            return winner
+    else:
+        print(f"No such a room:{room_id}.")
+    return None
+    
 
-def game_over():
-    return
+def game_over(room_id):
+    room = room_manager.get_room(room_id)
+    if room:
+        room.game_over()
+    else:
+        print(f"No such a room:{room_id}.")
+    return None
