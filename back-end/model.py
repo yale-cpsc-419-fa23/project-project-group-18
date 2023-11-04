@@ -12,15 +12,15 @@ class GameRoom:
         self.id = id
         self.__player_count = 0
         self.__player_set = set()
-        self.__max_player_count = 0
+        self.__max_player_count = 2
         self.__game_state = GameState.WAITING
         print(f"Game room {id} created.")
     
     def join_player(self, player):
-        if(self.is_join_avilable()):
+        if(self.is_join_available()):
             self.__player_count += 1
             self.__player_set.add(player)
-            print(f"{player} joins the room.")
+            print(f"{player} joins the room {self.id}.")
         else:
             print("Fail to join the room.")
 
@@ -31,8 +31,7 @@ class GameRoom:
         else:
             print("Leaving room: error occurs.")
 
-
-    def is_join_avilable(self):
+    def is_join_available(self):
         if(self.__game_state == GameState.ONGOING):
             print("A game is ongoing in the room.")
             return False
@@ -44,7 +43,7 @@ class GameRoom:
     
     def to_json(self):
         return {
-            "id": self.id,
+            "room_id": self.id,
             "player_count": self.__player_count
         }
 
