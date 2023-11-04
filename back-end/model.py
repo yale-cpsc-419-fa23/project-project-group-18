@@ -6,6 +6,7 @@ from game import TicTacToe
 class GameState(Enum):
     WAITING = 1
     ONGOING = 2
+    END = 3
 
 game_type_mapping = {
     "tic-tac-toe": TicTacToe,
@@ -35,12 +36,16 @@ class GameRoom:
             self.__player_list.remove(player)
             self.__player_count -=1
             print(f"{player} leaves the room.")
+            if self.__game_state == GameState.ONGOING:
+                self.__game_state = GameState.END
+                print(f"Game is eneed because of {player}'s leaving.")
+
         else:
             print(f"Player {player} is not in room.")
 
     def is_join_available(self):
-        if self.__game_state == GameState.ONGOING:
-            print("A game is ongoing in the room.")
+        if self.__game_state != GameState.WAITING:
+            print("Game is ongoing or ended in this room.")
             return False
         elif self.__player_count==self.__max_player_count :
             print("The room is full.")
@@ -68,7 +73,7 @@ class GameRoom:
     
     def game_over(self):
         print("Game over.")
-        self.__game_state = GameState.ONGOING
+        self.__game_state = GameState.END
         self.game.game_over()
     
     
