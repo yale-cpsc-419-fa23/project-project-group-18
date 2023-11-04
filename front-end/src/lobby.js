@@ -63,6 +63,7 @@ function set_up_lobby() {
         console.log('player_id does not exist\n create new player from server');
         create_player();
     }
+    $("#creat-room-button").on('click', create_room);
 }
 
 

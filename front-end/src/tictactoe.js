@@ -24,6 +24,7 @@ function initialize() {
         });
         $(this).addClass('disabled');
     });
+    $("#leave-button").on('click', leave_room);
     player_id = get_cookie("player_id");
     room_id = get_cookie("room_id");
     socket = io.connect(SERVER_ADDRESS.IP + ':' + SERVER_ADDRESS.PORT);

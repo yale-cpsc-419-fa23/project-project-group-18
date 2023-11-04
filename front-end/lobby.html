@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Lobby</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module" src="src/lobby.js"></script>
+    <script type="module"  src="src/global.js"></script>
 </head>
 <body>
 
@@ -12,10 +14,9 @@
 <select id="game-list">
     <option value="tic-tac-toe">Tic-Tac-Toe</option>
 </select>
-<button onclick="create_room()">Create Room</button>
+<button id = "creat-room-button" >Create Room</button>
 
-<script type="module" src="src/lobby.js"></script>
-<script type="module"  src="src/global.js"></script>
+
 
 </body>
 </html>
