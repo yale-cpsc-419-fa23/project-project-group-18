@@ -40,7 +40,10 @@ class TicTacToe(Game):
         }
     
     def make_move(self, player, index):
-        self.current_state[index / 3][index % 3] = self.player_map[player]
+        if self.check_move_validate:
+            self.current_state[index / 3][index % 3] = self.player_map[player]
+        else:
+            raise ValueError('The move is not valid')
     
     def check_move_validate(self, player, move):
         return True
