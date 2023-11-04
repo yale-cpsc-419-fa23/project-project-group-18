@@ -63,3 +63,6 @@ class TicTacToe(Game):
             'board': self.current_state,
             'players': self.players
         }
+    
+    def get_player_piece_map(self):
+        return self.player_map
