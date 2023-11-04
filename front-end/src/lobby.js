@@ -2,7 +2,7 @@ import {SERVER_ADDRESS} from './global.js'
 
 function fetch_rooms() {
     // also receive PlayerID, and store it somewhere,
-    $.get(`http://${SERVER_ADDRESS.SERVER_IP}:${SERVER_ADDRESS.PORT}/roomlist`, function(rooms) {
+    $.get(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/roomlist`, function(rooms) {
         console.log(rooms)
         const roomList = $('#room-list');
         roomList.empty();
@@ -15,7 +15,7 @@ function fetch_rooms() {
 
 
 function create_player() {
-    $.get(`http://${SERVER_ADDRESS.SERVER_IP}:${SERVER_ADDRESS.PORT}/newplayer`, function(response) {
+    $.get(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/newplayer`, function(response) {
         console.log(response.message)
         let player_id = response.player_id
         console.log("player id:", player_id)
@@ -30,7 +30,7 @@ function create_room() {
     let player_id = get_cookie('player_id');
     let game_type = $('#game-list').val();
     console.log(game_type);
-    $.post(`http://${SERVER_ADDRESS.SERVER_IP}:${SERVER_ADDRESS.PORT}/createroom`, { player_id: player_id, game_type: game_type }, function(response) {
+    $.post(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/createroom`, { player_id: player_id, game_type: game_type }, function(response) {
         let room_id = response.room_id
         document.cookie = `room_id=${room_id}`;
         jump_to_game()
@@ -46,7 +46,7 @@ function jump_to_game() {
 function join_room(room_id) {
     console.log(room_id)
     let player_id = get_cookie('player_id')
-    $.post(`http://${SERVER_ADDRESS.SERVER_IP}:${SERVER_ADDRESS.PORT}/joinroom`, { player_id: player_id, room_id: room_id}, function(response) {
+    $.post(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/joinroom`, { player_id: player_id, room_id: room_id}, function(response) {
         document.cookie = `room_id=${room_id}`;
         alert('Joined room ' + room_id);
         jump_to_game()
