@@ -36,7 +36,6 @@ function initialize() {
         $('#message').html(data.message);
         currentPiece = data.piece_map[player_id];
         opponentPiece = currentPiece == 'X' ? 'O' : 'X';
-        console.log(currentPiece)
         run();
     });
 }
@@ -53,7 +52,7 @@ function run() {
     socket.on('turnend_message', (data) => {
         update_state(data)
     })
-    socket.on('over', (data) => {
+    socket.on('gameover_message', (data) => {
         end_game(data)
     })
 }
@@ -77,6 +76,12 @@ function end_game(data) {
     else
         $('#message').html("You Win!");
     disable_cell_click_events();
+    $('#image-container').css('display', 'block');
+}
+
+function leave_room() {
+    socket.disconnect();
+    window.location.href = 'lobby.html';
 }
 
 function disable_cell_click_events() {
