@@ -23,21 +23,28 @@ def top_n_players(n=10)->list[tuple]:
     
 def add_player(id):
     connection, cursor = connect_db()
+    params = {
+        'player_id' : id,
+        'score': 0,
+    }
     query = '''
     INSERT INTO scores (player_id, score)
-    VALUES (?, ?);
+    VALUES (:player_id, :score);
     '''
-    cursor.execute(query, id, 0)
+    cursor.execute(query, params)
     close_connection(connection, cursor)
 
 def update_score(id):
     connection, cursor = connect_db()
+    params = {
+        'player_id' : id,
+    }
     query = '''
     UPDATE scores
-    SET score = score + 1
-    WHERE player_id = ?;
+    SET score = score + 10
+    WHERE player_id = :player_id;
     '''
-    cursor.execute(query, id)
+    cursor.execute(query, params)
     close_connection(connection, cursor)
 
 def connect_db() -> (sqlite3.Connection, sqlite3.Cursor):

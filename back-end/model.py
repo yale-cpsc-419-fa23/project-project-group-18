@@ -56,7 +56,8 @@ class GameRoom:
     def to_json(self):
         return {
             "room_id": self.id,
-            "player_count": self.__player_count
+            "player_count": self.__player_count,
+            "max_player_count": self.__max_player_count
         }
     
     def check_full(self):
