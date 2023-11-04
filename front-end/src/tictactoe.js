@@ -1,4 +1,4 @@
-import SERVER_ADDRESS from 'global_vars'
+import SERVER_ADDRESS from 'global'
 
 var socket;
 var currentPiece, opponentPiece;
