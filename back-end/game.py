@@ -53,6 +53,12 @@ class TicTacToe(Game):
     def check_move_validate(self, player, move):
         return True
 
+    def check_tie(self):
+        for cell in self.current_state:
+            if not cell:
+                return False
+        return True
+    
     def check_winner(self):
         board = self.current_state
         # Check rows and columns
