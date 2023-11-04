@@ -108,13 +108,15 @@ def player_make_move(data):
     print(f"{player_id}'s move is index:{move}")
     turn_end(room_id, player_id, move)
     
-    winner = check_game_over(room_id)
-    if winner:
+    is_over, player_id = check_game_over(room_id)
+    if is_over and player_id:
         socketio.emit('gameover_message', {'winner': player_id, 'message': f"{player_id} wins the game."}, room=room_id)
         game_over(room_id)
-        return
-    
-    turn_start(room_id)
+    elif is_over and not player_id:
+        socketio.emit('gameover_message', {'winner': "", 'message': f"Game ties."}, room=room_id)
+        game_over(room_id)
+    else:   
+        turn_start(room_id)
 
 @socketio.on('disconnect')
 def handle_disconnect():
@@ -162,10 +164,14 @@ def check_game_over(room_id):
         if winner:
             print(f"{winner} wins the game.")
             update_score(winner)
-            return winner
+            return True, winner 
+        
+        if room.game.check_tie():
+            print(f"Game tie.")
+            return True, ""
     else:
         print(f"No such a room:{room_id}.")
-    return None
+    return False, ""
     
 
 def game_over(room_id):

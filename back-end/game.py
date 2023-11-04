@@ -54,9 +54,13 @@ class TicTacToe(Game):
         return True
 
     def check_tie(self):
-        for cell in self.current_state:
-            if not cell:
-                return False
+        print(self.current_state)
+        for row in self.current_state:
+            for cell in row:
+                if cell == '':
+                    return False
+        
+                
         return True
     
     def check_winner(self):
