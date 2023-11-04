@@ -1,5 +1,6 @@
 from enum import Enum
 import random
+from game import TicTacToe
 
 
 class GameState(Enum):
