@@ -35,7 +35,9 @@ function create_player() {
 function create_room() {
     console.log("create")
     let player_id = get_cookie('player_id');
-    $.post(`http://${SERVER_IP}:${PORT}/createroom`, { player_id: player_id }, function(response) {
+    let game_type = $('#game-list').val();
+    console.log(game_type);
+    $.post(`http://${SERVER_IP}:${PORT}/createroom`, { player_id: player_id, game_type: game_type }, function(response) {
         let room_id = response.room_id
         document.cookie = `room_id=${room_id}`;
         jump_to_game()
