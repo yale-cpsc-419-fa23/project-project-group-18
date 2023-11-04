@@ -6,6 +6,7 @@ from game import TicTacToe
 class GameState(Enum):
     WAITING = 1
     ONGOING = 2
+    END = 3
 
 game_type_mapping = {
     "tic-tac-toe": TicTacToe,
@@ -23,7 +24,7 @@ class GameRoom:
         print(f"Game room {id} created.")
     
     def join_player(self, player):
-        if(self.is_join_available()):
+        if self.is_join_available():
             self.__player_count += 1
             self.__player_list.append(player)
             print(f"{player} joins the room {self.id}.")
@@ -31,18 +32,22 @@ class GameRoom:
             print("Fail to join the room.")
 
     def leave_player(self, player):
-        if(player in self.__player_list):
+        if player in self.__player_list:
             self.__player_list.remove(player)
             self.__player_count -=1
             print(f"{player} leaves the room.")
+            if self.__game_state == GameState.ONGOING:
+                self.__game_state = GameState.END
+                print(f"Game is eneed because of {player}'s leaving.")
+
         else:
-            print("Leaving room: error occurs.")
+            print(f"Player {player} is not in room.")
 
     def is_join_available(self):
-        if(self.__game_state == GameState.ONGOING):
-            print("A game is ongoing in the room.")
+        if self.__game_state != GameState.WAITING:
+            print("Game is ongoing or ended in this room.")
             return False
-        elif(self.__player_count==self.__max_player_count):
+        elif self.__player_count==self.__max_player_count :
             print("The room is full.")
             return False
         else:
@@ -56,6 +61,9 @@ class GameRoom:
     
     def check_full(self):
         return self.__player_count == self.__max_player_count
+    
+    def check_empty(self):
+        return self.__player_count == 0
 
     def start_game(self):
         print("Game start.")
@@ -63,6 +71,10 @@ class GameRoom:
         self.game.set_players(self.__player_list[0], self.__player_list[1])
         return self.game.get_player_piece_map()
     
+    def game_over(self):
+        print("Game over.")
+        self.__game_state = GameState.END
+        self.game.game_over()
     
     
     
@@ -91,13 +103,6 @@ class GameRoomManager:
             
         self.room_count += 1
         return new_room_id
-
-    
-    def remove_room(self, room_id):
-        
-        if room_id in self.rooms:
-            del self.rooms[room_id]
-            self.room_count -= 1
     
     def player_join_room(self, player_id, room_id):
         if(room_id not in self.rooms):
@@ -111,6 +116,24 @@ class GameRoomManager:
             else:
                 return False
     
+    def player_leave_room(self, player_id, room_id):
+        if room_id not in self.rooms:
+            print(f"Room: {room_id} is not existed.")
+            return False
+        else:
+            room = self.rooms[room_id]
+            room.leave_player(player_id)
+            if room.check_empty():
+                self.remove_room(room_id)
+                print(f"Room {room_id} has been removed.")
+
+    def remove_room(self, room_id):
+        if room_id in self.rooms:
+            del self.rooms[room_id]
+            self.room_count -= 1 
+        else:
+            print(f"Fail to remove. No room {room_id}")
+
     def generate_room_id(self):
         room_number = random.randint(100000, 999999)
         return str(room_number)

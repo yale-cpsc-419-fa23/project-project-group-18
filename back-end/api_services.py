@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
 import uuid
-from db_services import top_n_players
+from db_services import top_n_players, add_player, update_score
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -21,6 +21,7 @@ def new_player_id():
 
     player_id = str(uuid.uuid4())
     response = jsonify(success=True, message="New Player ID generated.", player_id=player_id)
+    add_player(player_id)
     #response.set_cookie('player_id', player_id, samesite='None', secure= True)
 
     return response
@@ -38,6 +39,7 @@ def get_room_list():
 def get_leader_board():
     result = top_n_players(10)
     json_list = []
+    print(result)
     for row in result:
         json_list.append({'player_id':row[0], 'score':row[1]})
 
@@ -106,14 +108,30 @@ def player_make_move(data):
     print(f"{player_id}'s move is index:{move}")
     turn_end(room_id, player_id, move)
     
-    if check_game_over():
+    winner = check_game_over(room_id)
+    if winner:
+        socketio.emit('gameover_message', {'winner': player_id, 'message': f"{player_id} wins the game."}, room=room_id)
+        game_over(room_id)
         return
     
     turn_start(room_id)
 
+@socketio.on('disconnect')
+def handle_disconnect():
+    print('Client disconnected', request.sid)
+    player_id = sid_manager[request.sid]
+    room_id = player_manager[player_id]
+    room_manager.player_leave_room(player_id, room_id)
+    if player_id in player_manager:
+        del player_manager[player_id]
+    if request.sid in sid_manager:
+        del sid_manager[request.sid]
+
+
+
+
 def check_game_start(room_id):
     room = room_manager.get_room(room_id)
-    print(room.to_json())
     if room and room.check_full():
         time.sleep(1)    
         piece_map = room.start_game()
@@ -137,8 +155,23 @@ def turn_end(room_id, player_id, move):
     else:
         print(f"No such a room:{room_id}.")
 
-def check_game_over():
-    return
+def check_game_over(room_id):
+    room = room_manager.get_room(room_id)
+    if room:
+        winner = room.game.check_winner()
+        if winner:
+            print(f"{winner} wins the game.")
+            update_score(winner)
+            return winner
+    else:
+        print(f"No such a room:{room_id}.")
+    return None
+    
 
-def game_over():
-    return
+def game_over(room_id):
+    room = room_manager.get_room(room_id)
+    if room:
+        room.game_over()
+    else:
+        print(f"No such a room:{room_id}.")
+    return None

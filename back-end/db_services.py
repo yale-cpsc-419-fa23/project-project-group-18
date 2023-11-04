@@ -2,7 +2,7 @@ import os
 from sys import stderr, exit
 import sqlite3
 
-DB_PATH = 'database.sqlite'
+DB_PATH = os.path.dirname(__file__)+'/database.sqlite'
 
 
 def top_n_players(n=10)->list[tuple]:
@@ -21,7 +21,24 @@ def top_n_players(n=10)->list[tuple]:
     close_connection(connection, cursor)
     return result
     
+def add_player(id):
+    connection, cursor = connect_db()
+    query = '''
+    INSERT INTO scores (player_id, score)
+    VALUES (?, ?);
+    '''
+    cursor.execute(query, id, 0)
+    close_connection(connection, cursor)
 
+def update_score(id):
+    connection, cursor = connect_db()
+    query = '''
+    UPDATE scores
+    SET score = score + 1
+    WHERE player_id = ?;
+    '''
+    cursor.execute(query, id)
+    close_connection(connection, cursor)
 
 def connect_db() -> (sqlite3.Connection, sqlite3.Cursor):
     """connect to sqlite database
