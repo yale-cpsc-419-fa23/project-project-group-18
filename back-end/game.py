@@ -24,6 +24,7 @@ class TicTacToe(Game):
     def __init__(self):
         super().__init__()
         self.current_state = [['', '', ''], ['', '', ''], ['', '', '']]
+        self.current_turn = 'O'
 
     def set_players(self, player1, player2):
         self.player_map = {
@@ -38,10 +39,17 @@ class TicTacToe(Game):
     
     def make_move(self, player, index):
         if self.check_move_validate:
-            self.current_state[index / 3][index % 3] = self.player_map[player]
+            self.current_state[index // 3][index % 3] = self.player_map[player]
+            self.next_turn()
         else:
             raise ValueError('The move is not valid')
     
+    def get_current_turn(self):
+        return self.current_turn
+
+    def next_turn(self):
+        self.current_turn = 'X' if self.current_turn == 'O' else 'O'
+
     def check_move_validate(self, player, move):
         return True
 

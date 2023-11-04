@@ -87,11 +87,47 @@ def player_join_room(data):
 
     check_game_start(room_id)
 
+@socketio.on('makemove')
+def player_make_move(data):
+    player_id = data['player_id']
+    room_id = data['room_id']
+    move = data['index']
+    print(f"{player_id}'s move is index:{move}")
+    turn_end(room_id, player_id, move)
+    
+    if check_game_over():
+        return
+    
+    turn_start(room_id)
 
 def check_game_start(room_id):
     room = room_manager.get_room(room_id)
+    print(room.to_json())
     if room and room.check_full():
-        print(room.to_json())
         time.sleep(1)    
         piece_map = room.start_game()
         socketio.emit('gamestart_message', {'piece_map': piece_map, 'message': f"Tic Tac Toe Game Starts"}, room=room_id)
+        turn_start(room_id)
+
+def turn_start(room_id):
+    room = room_manager.get_room(room_id)
+    if room:
+        turn = room.game.get_current_turn()
+        socketio.emit('turnstart_message', {"turn" : turn, "message" : f"{turn}'s turn starts" }, room=room_id)
+    else:
+        print(f"No such a room:{room_id}.")
+
+def turn_end(room_id, player_id, move):
+    room = room_manager.get_room(room_id)
+    if room:
+        turn = room.game.get_current_turn()
+        room.game.make_move(player_id, move)
+        socketio.emit('turnend_message', {"turn" : turn, "index" :move, "message" : f"{turn}'s turn ends" }, room=room_id)
+    else:
+        print(f"No such a room:{room_id}.")
+
+def check_game_over():
+    return
+
+def game_over():
+    return

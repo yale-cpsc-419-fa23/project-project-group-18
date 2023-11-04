@@ -15,7 +15,7 @@ class GameRoom:
         self.__player_list = []
         self.__max_player_count = 2
         self.__game_state = GameState.WAITING
-        self.__game = TicTacToe()
+        self.game = TicTacToe()
         print(f"Game room {id} created.")
     
     def join_player(self, player):
@@ -56,8 +56,9 @@ class GameRoom:
     def start_game(self):
         print("Game start.")
         self.__game_state = GameState.ONGOING
-        self.__game.set_players(self.__player_list[0], self.__player_list[1])
-        return self.__game.get_player_piece_map()
+        self.game.set_players(self.__player_list[0], self.__player_list[1])
+        return self.game.get_player_piece_map()
+    
     
     
     
