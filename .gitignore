@@ -2,8 +2,6 @@
 .python-version
 settings.json
 
-# Database files (potentially too large for GitHub)
-*.sqlite
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
