@@ -1,7 +1,20 @@
-import SERVER_ADDRESS from 'global'
+import {SERVER_ADDRESS} from './global.js'
 
 var socket;
 var currentPiece, opponentPiece;
+var player_id, room_id;
+
+function get_cookie(name) {
+    // get cookie by name
+    let cookieArr = document.cookie.split("; ");
+    for(let i = 0; i < cookieArr.length; i++) {
+        let cookiePair = cookieArr[i].split("=");
+        if (name == cookiePair[0]) {
+            return cookiePair[1];
+        }
+    }
+    return null;
+}
 
 initialize();
 
@@ -12,14 +25,17 @@ function initialize() {
         });
         $(this).addClass('disabled');
     });
-    socket = io.connect(SERVER_ADDRESS.IP + SERVER_ADDRESS.PORT);
-    socket.on('success', () => {
-        $('#message').html("Waiting for players to join...");
+    player_id = get_cookie("player_id");
+    room_id = get_cookie("room_id");
+    socket = io.connect(SERVER_ADDRESS.IP + ':' + SERVER_ADDRESS.PORT);
+    socket.on('joinroom_message', (data) => {
+        if (data.is_success == true)
+            $('#message').html("Waiting for players to join...");
     });
     socket.on('start', (data) => {
         $('#message').html("Game Start!");
         // Get current player's piece
-        currentPiece = data["piece"][player_id];
+        currentPiece = data.piece[player_id];
         opponentPiece = currentPiece == 'X' ? 'O' : 'X';
         run();
     });
@@ -27,7 +43,7 @@ function initialize() {
 
 function run() {
     socket.on('turn', (data) => {
-        if (data["mover"] == player_id) {
+        if (data.mover == player_id) {
             enable_cell_click_events();
             $('#message').html("Your turn!");
         }
@@ -39,16 +55,15 @@ function run() {
 }
 
 function make_move(index) {
-
-    socket.emit('move', {username: 'Sauki', room: 'room1', index, player: currentPiece});
     disable_cell_click_events();
+    socket.emit('move', {player_id: player_id, room_id: room_id, index: index});
 }
 
 function update_state(data) {
     // Get move location form data
-    const location = data["location"];
+    const location = data.location;
     
-    if (data["mover"] == player_id)
+    if (data.mover == player_id)
         $('#board').children().eq(location).text(currentPiece);
     else
         $('#board').children().eq(location).text(opponentPiece);
@@ -56,7 +71,7 @@ function update_state(data) {
 }
 
 function end_game(data) {
-    const winner = data["winner"]
+    const winner = data.winner
     if (winner == player_id)
         $('#message').html("You lose!");
     else
