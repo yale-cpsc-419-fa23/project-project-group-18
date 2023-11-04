@@ -2,7 +2,7 @@ import os
 from sys import stderr, exit
 import sqlite3
 
-DB_PATH = 'database.sqlite'
+DB_PATH = os.path.dirname(__file__)+'/database.sqlite'
 
 
 def top_n_players(n=10)->list[tuple]:

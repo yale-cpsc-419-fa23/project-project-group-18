@@ -38,6 +38,7 @@ def get_room_list():
 def get_leader_board():
     result = top_n_players(10)
     json_list = []
+    print(result)
     for row in result:
         json_list.append({'player_id':row[0], 'score':row[1]})
 
