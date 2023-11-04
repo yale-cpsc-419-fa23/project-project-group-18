@@ -44,7 +44,7 @@ function run() {
     socket.on('turnstart_message', (data) => {
         if (data.turn == currentPiece) {
             enable_cell_click_events();
-            $('#message').html(data.message);
+            $('#message').html(data.message + ", make a move.");
         }
         else
             $('#message').html(data.message + ", waiting for opponent...");
@@ -72,11 +72,11 @@ function update_state(data) {
 function end_game(data) {
     const winner = data.winner
     if (winner == player_id)
-        $('#message').html("You lose!");
-    else
         $('#message').html("You Win!");
+    else
+        $('#message').html("You Lose!");
     disable_cell_click_events();
-    $('#image-container').css('display', 'block');
+    $('#leave').css('display', 'block');
 }
 
 function leave_room() {
