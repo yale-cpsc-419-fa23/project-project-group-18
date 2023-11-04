@@ -15,7 +15,7 @@ function fetch_rooms() {
         roomList.empty();
         rooms.forEach(room => {
             console.log(room)
-            roomList.append(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button onclick="joinRoom(${room.id})">Join</button></li>`);
+            roomList.append(`<li>Room ID: ${room.room_id}, Players: ${room.player_count} <button onclick="join_room(${room.id})">Join</button></li>`);
         });
     });
 }

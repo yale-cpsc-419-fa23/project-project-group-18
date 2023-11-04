@@ -10,7 +10,7 @@ socket.on('message', function(data) {
 window.makeMove = function(index) {
 
     console.log(JSON.stringify(JSON.stringify({ index, player: currentPlayer, room:'room1'})))
-    socket.emit('join', {username: 'John', room: 'room1', index, player: currentPlayer});
+    socket.emit('join', {username: 'Sauki', room: 'room1', index, player: currentPlayer});
     
     if (board[index] === null) {
             board[index] = currentPlayer;
