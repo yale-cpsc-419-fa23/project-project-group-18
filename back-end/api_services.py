@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
 import uuid
-from db_services import top_n_players
+from db_services import top_n_players, add_player, update_score
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -21,6 +21,7 @@ def new_player_id():
 
     player_id = str(uuid.uuid4())
     response = jsonify(success=True, message="New Player ID generated.", player_id=player_id)
+    add_player(player_id)
     #response.set_cookie('player_id', player_id, samesite='None', secure= True)
 
     return response
@@ -159,6 +160,7 @@ def check_game_over(room_id):
         winner = room.game.check_winner()
         if winner:
             print(f"{winner} wins the game.")
+            update_score(winner)
             return winner
     else:
         print(f"No such a room:{room_id}.")
