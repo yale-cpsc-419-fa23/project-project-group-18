@@ -27,13 +27,14 @@ function initialize() {
     player_id = get_cookie("player_id");
     room_id = get_cookie("room_id");
     socket = io.connect(SERVER_ADDRESS.IP + ':' + SERVER_ADDRESS.PORT);
+    socket.emit('joinroom', {player_id: player_id, room_id: room_id});
     socket.on('joinroom_message', (data) => {
         if (data.is_success == true)
             $('#message').html("Waiting for players to join...");
     });
     socket.on('gamestart_message', (data) => {
         $('#message').html(data.message);
-        currentPiece = data.piece[player_id];
+        currentPiece = data.piece_map[player_id];
         opponentPiece = currentPiece == 'X' ? 'O' : 'X';
         console.log(currentPiece)
         run();
@@ -47,14 +48,19 @@ function run() {
             $('#message').html(data.message);
         }
         else
-            $('#message').html(data + " Waiting for opponent...");
+            $('#message').html(data.message + ", waiting for opponent...");
     });
-    socket.on('turnend_message', update_state(data))
-    socket.on('over', end_game(data))
+    socket.on('turnend_message', (data) => {
+        update_state(data)
+    })
+    socket.on('over', (data) => {
+        end_game(data)
+    })
 }
 
 function make_move(index) {
     disable_cell_click_events();
+    console.log(index)
     socket.emit('makemove', {player_id: player_id, room_id: room_id, index: index});
 }
 
