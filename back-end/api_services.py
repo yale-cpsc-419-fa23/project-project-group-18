@@ -120,7 +120,6 @@ def handle_disconnect():
 
 def check_game_start(room_id):
     room = room_manager.get_room(room_id)
-    print(room.to_json())
     if room and room.check_full():
         time.sleep(1)    
         piece_map = room.start_game()
