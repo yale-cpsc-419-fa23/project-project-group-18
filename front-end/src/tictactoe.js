@@ -15,7 +15,6 @@ function get_cookie(name) {
     }
     return null;
 }
-
 initialize();
 
 function initialize() {
@@ -32,42 +31,37 @@ function initialize() {
         if (data.is_success == true)
             $('#message').html("Waiting for players to join...");
     });
-    socket.on('start', (data) => {
-        $('#message').html("Game Start!");
-        // Get current player's piece
+    socket.on('gamestart_message', (data) => {
+        $('#message').html(data.message);
         currentPiece = data.piece[player_id];
         opponentPiece = currentPiece == 'X' ? 'O' : 'X';
+        console.log(currentPiece)
         run();
     });
 }
 
 function run() {
-    socket.on('turn', (data) => {
-        if (data.mover == player_id) {
+    socket.on('turnstart_message', (data) => {
+        if (data.turn == currentPiece) {
             enable_cell_click_events();
-            $('#message').html("Your turn!");
+            $('#message').html(data.message);
         }
         else
-            $('#message').html("Waiting for opponent...");
+            $('#message').html(data + " Waiting for opponent...");
     });
-    socket.on('update', update_state(data))
+    socket.on('turnend_message', update_state(data))
     socket.on('over', end_game(data))
 }
 
 function make_move(index) {
     disable_cell_click_events();
-    socket.emit('move', {player_id: player_id, room_id: room_id, index: index});
+    socket.emit('makemove', {player_id: player_id, room_id: room_id, index: index});
 }
 
 function update_state(data) {
-    // Get move location form data
-    const location = data.location;
-    
-    if (data.mover == player_id)
-        $('#board').children().eq(location).text(currentPiece);
-    else
-        $('#board').children().eq(location).text(opponentPiece);
-    $('#board').children().eq(location).off('click');
+    const index = data.index;
+    $('#board').children().eq(index).text(data.turn);
+    $('#board').children().eq(index).off('click');
 }
 
 function end_game(data) {
