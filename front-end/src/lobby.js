@@ -4,10 +4,12 @@ var mock_rooms = [
     {id: "0002", players: 3},
 ];
 
+const SERVER_IP = '192.168.4.48'
+const port = '5001'
 
-function fetchRooms() {
+function fetch_rooms() {
     // also receive PlayerID, and store it somewhere,
-    $.get('http://192.168.4.48:5001/roomlist', function(rooms) {
+    $.get(`http://${SERVER_IP}:${port}/roomlist`, function(rooms) {
         console.log(rooms)
         const roomList = $('#room-list');
         roomList.empty();
@@ -19,18 +21,28 @@ function fetchRooms() {
 }
 
 
-function createRoom() {
+function create_player() {
+    $.get(`http://${SERVER_IP}:${port}/newplayer`, function(response) {
+        console.log(response.message)
+        let player_id = response.player_id
+        console.log("player id:", player_id)
+        return
+    });
+}
+
+
+function create_room() {
     // send player_id, 
     // receive room_id,
     // navigate to room page,
     // store room_id, room_state
     $.post('url/api/create-room', function() {
-        fetchRooms();  // Fetch the updated list of rooms
+        fetch_rooms();  // Fetch the updated list of rooms
     });
 }
 
 
-function joinRoom(roomId) {
+function join_room(roomId) {
     $.post(`url/api/join-room/${roomId}`, function() {
         alert('Joined room ' + roomId);
     });
@@ -39,5 +51,6 @@ function joinRoom(roomId) {
 
 // Fetch the initial list of rooms
 $(document).ready(function() {
-    fetchRooms();
+    fetch_rooms();
+    create_player()
 });
