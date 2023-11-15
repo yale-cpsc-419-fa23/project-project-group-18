@@ -47,8 +47,9 @@ def get_leader_board():
         
 @app.route('/createroom', methods=['POST'])
 def create_new_room():
-    player_id = request.form['player_id']
-    game_type = request.form['game_type']
+    data = request.json
+    player_id = data['player_id']
+    game_type = data['game_type']
     if not player_id:
         response = jsonify(success=False, message="Illegal player ID")
         return response
