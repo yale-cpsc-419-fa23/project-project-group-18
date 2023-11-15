@@ -70,8 +70,9 @@ def create_new_room():
 
 @app.route('/joinroom', methods=['POST'])
 def join_room():
-    player_id = request.form['player_id']
-    room_id = request.form['room_id']
+    data = request.json
+    player_id = data['player_id']
+    room_id = data['room_id']
     if not player_id or not room_id:
         response = jsonify(success=False, message="Illegal player_id or room_id")
     else:

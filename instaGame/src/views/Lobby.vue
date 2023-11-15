@@ -17,6 +17,8 @@ import LeaderBoard from '../components/LeaderBoard.vue'
 import { ref, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 import { useRouter } from 'vue-router';
+import { get_cookie } from '@/utils';
+
 const router = useRouter();
 
 const createPlayer = () => {
@@ -56,18 +58,6 @@ const createRoom = () => {
   })
   .catch(error => console.error('Error:', error));
 };
-
-// Additional function for cookie retrieval
-function get_cookie(name) {
-let cookieArr = document.cookie.split("; ");
-for(let i = 0; i < cookieArr.length; i++) {
-  let cookiePair = cookieArr[i].split("=");
-  if (name === cookiePair[0].trim()) {
-    return cookiePair[1];
-  }
-}
-return null;
-}
 
 onMounted(() => {
 let player_id = get_cookie('player_id');
