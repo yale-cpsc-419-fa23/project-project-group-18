@@ -17,31 +17,44 @@ player_manager = {}
 sid_manager = {}
 
 #test————————————————————————————————
-room_id1 = room_manager.create_new_room('tic-tac-toe')
+room_id1 = room_manager.create_new_room('Tic-Tac-Toe')
 is_success = room_manager.player_join_room('1', room_id1)
 is_success = room_manager.player_join_room('2', room_id1)
 
-room_id2 = room_manager.create_new_room('tic-tac-toe')
+room_id2 = room_manager.create_new_room('Tic-Tac-Toe')
 is_success = room_manager.player_join_room('3', room_id2)
 
 
-room_id3 = room_manager.create_new_room('tic-tac-toe')
+room_id3 = room_manager.create_new_room('Tic-Tac-Toe')
 is_success = room_manager.player_join_room('4', room_id3)
 
 
-room_id4 = room_manager.create_new_room('tic-tac-toe')
+room_id4 = room_manager.create_new_room('Tic-Tac-Toe')
 is_success = room_manager.player_join_room('5', room_id4)
 is_success = room_manager.player_join_room('6', room_id4)
 
-room_id5 = room_manager.create_new_room('tic-tac-toe')
+room_id5 = room_manager.create_new_room('Tic-Tac-Toe')
 is_success = room_manager.player_join_room('7', room_id5)
 
+@app.route('/testcookies', methods=['POST'])
+def testCookies():
+    #data = request.json
+    #user_id = data['user_id']
+    data = request.json
+    player_id = data['player_id']
+    print(player_id)
+    #player_id = request.args.get('player_id')
+    response = jsonify(message="Set cookie.")
+    response.set_cookie('ijojojioj', player_id)
+    return response
 #test————————————————————————————————
+
 
 @app.route('/newplayer', methods=['GET'])
 def new_player_id():
 
     player_id = str(uuid.uuid4())
+    print(player_id)
     response = jsonify(success=True, message="New Player ID generated.", player_id=player_id)
     add_player(player_id)
     #response.set_cookie('player_id', player_id, samesite='None', secure= True)

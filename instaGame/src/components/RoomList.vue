@@ -1,5 +1,5 @@
 <template>
-  <v-table fixed-header height="300px">
+  <v-table fixed-header height="500px">
     <thead>
       <tr>
         <th class="text-left">Room ID</th>
@@ -26,8 +26,10 @@
 import { ref, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 import { get_cookie } from '@/utils';
+import { useRouter } from 'vue-router';
 
 const roomList = ref([]);
+const router = useRouter();
 
 const fetchRooms = () => {
   fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/roomlist`)

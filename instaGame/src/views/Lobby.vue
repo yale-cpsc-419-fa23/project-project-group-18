@@ -1,70 +1,68 @@
 <template>
   <div>
-    <RoomList />
+    <!-- <v-btn variant="tonal" @click="testLogin">
+      Test
+    </v-btn> -->
+    <v-row>
+      <v-col cols="6">
+        <RoomList />
 
-    <v-select
-      label="SelectGame"
-      :items="['Tic-Tac-Toe', 'Others']"
-      variant="solo-inverted"
-      v-model = "selectedGame"
-    ></v-select>
-    <v-btn variant="tonal" @click="createRoom">
-      Create Room
-    </v-btn>
-    <!-- <button id="create-room-button" @click="createRoom">Create Room</button> -->
+        <SelectGame />
+      </v-col>
 
-    <LeaderBoard />
+      <v-col cols="3" class="leaderboard-col">
+
+        <div class="leaderboard">
+        <LeaderBoard />
+        </div>
+      </v-col>
+
+    </v-row>
   </div> 
 </template>
   
 <script setup>
 import RoomList from '../components/RoomList.vue'
 import LeaderBoard from '../components/LeaderBoard.vue'
+import SelectGame from '../components/SelectGame.vue';
 import { ref, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 import { useRouter } from 'vue-router';
 import { get_cookie } from '@/utils';
 
 const router = useRouter();
-const selectedGame = ref('')
 
-const createPlayer = () => {
-fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/newplayer`)
-.then(response => {
-  console.log(response.message)
-  let player_id = response.player_id
-  console.log("player id:", player_id)
-  document.cookie = `player_id=${player_id}`
-  // return player_id
-})
-.catch(error => console.error('Error:', error));
-}
 
-const createRoom = () => {
-  console.log("create");
-
+const testLogin = () => {
   let player_id = get_cookie('player_id');
-  let game_type = selectedGame.value;
-  console.log(game_type);
-
-  fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/createroom`, {
+  fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/testcookies`, {
     method: 'POST',
     headers: {
     'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ player_id: player_id, game_type: game_type })
+    body: JSON.stringify({ player_id: player_id })
   })
   .then(response => response.json())
-  .then(data => {
-    console.log(data)
-    let room_id = data.room_id;
-    document.cookie = `room_id=${room_id}`;
-    console.log(room_id)
-    let gameType = 'TicTacToe';
-    router.push({ path: '/game', query: { gameType: gameType } });
+  .then(response => {
+    console.log(response.message)
   })
   .catch(error => console.error('Error:', error));
-};
+
+}
+
+
+const createPlayer = () => {
+  fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/newplayer`)
+  .then(response => response.json())
+  .then(response => {
+    console.log(response.message)
+    let player_id = response.player_id
+    console.log("player id:", player_id)
+    document.cookie = `player_id=${player_id}`
+    // return player_id
+  })
+  .catch(error => console.error('Error:', error));
+}
 
 onMounted(() => {
 let player_id = get_cookie('player_id');
@@ -74,7 +72,12 @@ if (player_id) {
     console.log('player_id does not exist\n create new player from server');
     createPlayer();
   }
-// fetchLeaderBoard();
-// setInterval(fetchLeaderBoard, 60000);
 });
 </script>
+
+<style>
+  .leaderboard-col {
+    max-height: 50vh;
+    overflow: auto; /* Optional, for scroll if content exceeds max height */
+  }
+</style>
