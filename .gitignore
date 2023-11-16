@@ -2,7 +2,6 @@
 .python-version
 settings.json
 back-end/test_db.py
-# TODO: merge instaGame
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
