@@ -36,12 +36,25 @@ is_success = room_manager.player_join_room('6', room_id4)
 room_id5 = room_manager.create_new_room('tic-tac-toe')
 is_success = room_manager.player_join_room('7', room_id5)
 
+@app.route('/testcookies', methods=['POST'])
+def testCookies():
+    #data = request.json
+    #user_id = data['user_id']
+    data = request.json
+    player_id = data['player_id']
+    print(player_id)
+    #player_id = request.args.get('player_id')
+    response = jsonify(message="Set cookie.")
+    response.set_cookie('ijojojioj', player_id)
+    return response
 #test————————————————————————————————
+
 
 @app.route('/newplayer', methods=['GET'])
 def new_player_id():
 
     player_id = str(uuid.uuid4())
+    print(player_id)
     response = jsonify(success=True, message="New Player ID generated.", player_id=player_id)
     add_player(player_id)
     #response.set_cookie('player_id', player_id, samesite='None', secure= True)
