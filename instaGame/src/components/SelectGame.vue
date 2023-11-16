@@ -17,7 +17,9 @@
 import { ref, onMounted } from 'vue';
 import { get_cookie } from '@/utils';
 import { SERVER_ADDRESS } from '../config.js';
+import { useRouter } from 'vue-router';
 const selectedGame = ref('')
+const router = useRouter();
 
 const createRoom = () => {
   console.log("create");
@@ -39,8 +41,7 @@ const createRoom = () => {
     let room_id = data.room_id;
     document.cookie = `room_id=${room_id}`;
     console.log(room_id)
-    let gameType = 'TicTacToe';
-    router.push({ path: '/game', query: { gameType: gameType } });
+    router.push({ path: '/game', query: { gameType: game_type } });
   })
   .catch(error => console.error('Error:', error));
 };

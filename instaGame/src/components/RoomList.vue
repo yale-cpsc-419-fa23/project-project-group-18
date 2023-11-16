@@ -26,8 +26,10 @@
 import { ref, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 import { get_cookie } from '@/utils';
+import { useRouter } from 'vue-router';
 
 const roomList = ref([]);
+const router = useRouter();
 
 const fetchRooms = () => {
   fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/roomlist`)
