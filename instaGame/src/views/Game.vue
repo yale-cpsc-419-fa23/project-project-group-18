@@ -1,7 +1,9 @@
 <template>
+	
 	<div>
 		Game: {{ gameType }}
 	</div> 
+
 </template>
 
 <script setup>

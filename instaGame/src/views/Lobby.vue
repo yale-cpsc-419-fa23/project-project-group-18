@@ -2,10 +2,16 @@
   <div>
     <RoomList />
 
-    <select id="game-list">
-      <option value="tic-tac-toe">Tic-Tac-Toe</option>
-    </select>
-    <button id="create-room-button" @click="createRoom">Create Room</button>
+    <v-select
+      label="SelectGame"
+      :items="['Tic-Tac-Toe', 'Others']"
+      variant="solo-inverted"
+      v-model = "selectedGame"
+    ></v-select>
+    <v-btn variant="tonal" @click="createRoom">
+      Create Room
+    </v-btn>
+    <!-- <button id="create-room-button" @click="createRoom">Create Room</button> -->
 
     <LeaderBoard />
   </div> 
@@ -20,6 +26,7 @@ import { useRouter } from 'vue-router';
 import { get_cookie } from '@/utils';
 
 const router = useRouter();
+const selectedGame = ref('')
 
 const createPlayer = () => {
 fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/newplayer`)
@@ -37,7 +44,7 @@ const createRoom = () => {
   console.log("create");
 
   let player_id = get_cookie('player_id');
-  let game_type = document.getElementById('game-list').value;
+  let game_type = selectedGame.value;
   console.log(game_type);
 
   fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/createroom`, {

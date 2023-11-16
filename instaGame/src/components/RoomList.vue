@@ -1,10 +1,25 @@
 <template>
-    <ul id="room-list">
-      <li v-for="room in roomList" :key="room.room_id">
-        Room ID: {{ room.room_id }}, Players: {{ room.player_count }}/{{ room.max_player_count }}
-        <button class="join-button" @click="joinRoom(room.room_id)">Join</button>
-      </li>
-    </ul>
+  <v-table fixed-header height="300px">
+    <thead>
+      <tr>
+        <th class="text-left">Room ID</th>
+        <th class="text-left">Players</th>
+        <th class="text-left"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="room in roomList" :key="room.room_id">
+        <td>{{ room.room_id }}</td>
+        <td>{{ room.player_count }}/{{ room.max_player_count }}</td>
+        <td>
+          <v-btn class="join-button" @click="joinRoom(room.room_id)">
+          Join
+          </v-btn>
+        </td>
+
+      </tr>
+    </tbody>
+  </v-table>
 </template>
   
 <script setup>

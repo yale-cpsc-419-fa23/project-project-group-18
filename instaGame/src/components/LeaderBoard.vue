@@ -1,7 +1,7 @@
 <!-- LeaderBoard.vue -->
 <template>
     <div id="leaderboard">
-      <table v-if="leaderboardData.length > 0">
+      <v-table v-if="leaderboardData.length > 0">
         <tr>
           <th colspan="2">Leader Board</th>
         </tr>
@@ -9,11 +9,13 @@
           <th>Player ID</th>
           <th>Score</th>
         </tr>
-        <tr v-for="row in leaderboardData" :key="row.player_id">
+        <tbody>
+          <tr v-for="row in leaderboardData" :key="row.player_id">
           <td>{{ row.player_id }}</td>
           <td>{{ row.score }}</td>
-        </tr>
-      </table>
+          </tr>
+        </tbody>
+      </v-table>
     </div>
 </template>
   
@@ -43,6 +45,10 @@ setInterval(fetchLeaderBoard, 60000);
 </script>
 
 <style>
-/* Your CSS styles here */
+table.v-table tbody td {
+    height: 10px;
+    border: none;
+    color: red;
+}
 </style>
   
