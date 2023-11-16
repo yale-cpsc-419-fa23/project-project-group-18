@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
 import uuid
-from db_services import top_n_players, add_player, update_score
+from db_services import top_n_players, add_player, update_score, user_login
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -16,6 +16,10 @@ player_manager = {}
 #mapping from sid to player_id
 sid_manager = {}
 
+#test————————————————————————————————
+
+#test————————————————————————————————
+
 @app.route('/newplayer', methods=['GET'])
 def new_player_id():
 
@@ -25,6 +29,21 @@ def new_player_id():
     #response.set_cookie('player_id', player_id, samesite='None', secure= True)
 
     return response
+
+@app.route('/login', methods=['POST'])
+def userlogin():
+    user_id = request.form['user_id']
+    password = request.form['password']
+    if not user_id or not password:
+        response = jsonify(success=False, message="Empty username or password.")
+        return response
+    is_success = user_login(user_id, password)
+    if is_success:
+        response = jsonify(success=True, message="Login successfully.", user_id=user_id)
+    else:
+        response = jsonify(success=False, message="Wrong username or password.")
+    return response
+
 
 @app.route('/roomlist', methods=['GET'])
 def get_room_list():
@@ -39,7 +58,6 @@ def get_room_list():
 def get_leader_board():
     result = top_n_players(10)
     json_list = []
-    print(result)
     for row in result:
         json_list.append({'player_id':row[0], 'score':row[1]})
 
@@ -112,8 +130,8 @@ def player_make_move(data):
     if is_over and player_id:
         socketio.emit('gameover_message', {'winner': player_id, 'message': f"{player_id} wins the game."}, room=room_id)
         game_over(room_id)
-    elif is_over and not player_id:
-        socketio.emit('gameover_message', {'winner': "", 'message': f"Game ties."}, room=room_id)
+    elif is_over and player_id=="":
+        socketio.emit('gameover_message', {'winner': "", 'message': "Game ties."}, room=room_id)
         game_over(room_id)
     else:   
         turn_start(room_id)
