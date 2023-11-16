@@ -4,6 +4,58 @@ import sqlite3
 
 DB_PATH = os.path.dirname(__file__)+'/database.sqlite'
 
+def user_login(username, password):
+    connection, cursor = connect_db()
+    params = {
+        'username' : username,
+    }
+    query = '''
+    SELECT password FROM users
+    WHERE username = :username;
+    '''
+    cursor.execute(query, params)
+    user = cursor.fetchone()
+    close_connection(connection, cursor)
+    if not user:
+        print("Username not existed.")
+        return False
+    elif user[0] != password:
+        print("Password not matched.")
+        return False
+    
+    if user[0] == password:
+        print("Successfully logined.")
+        return True
+    
+    print("Failed to login.")
+    return False
+
+
+def user_register(username, password):
+    connection, cursor = connect_db()
+    params = {
+        'username' : username,
+        'password' : password
+    }
+    query = '''
+    SELECT * FROM users
+    WHERE username = :username;
+    '''
+    cursor.execute(query, params)
+    user = cursor.fetchone()
+    if len(user) == 0:
+        print("Username already existed.")
+        is_success = False
+    else:
+        statement = "INSERT INTO users (username, password) VALUES (:username, :password)"
+        cursor.execute(statement, params)
+        connection.commit()
+        print("New user created.")
+        is_success = True
+    close_connection(connection, cursor)
+    return is_success
+
+    
 
 def top_n_players(n=10)->list[tuple]:
     connection, cursor = connect_db()
@@ -32,6 +84,7 @@ def add_player(id):
     VALUES (:player_id, :score);
     '''
     cursor.execute(query, params)
+    connection.commit()
     close_connection(connection, cursor)
 
 def update_score(id):
@@ -45,6 +98,7 @@ def update_score(id):
     WHERE player_id = :player_id;
     '''
     cursor.execute(query, params)
+    connection.commit()
     close_connection(connection, cursor)
 
 def connect_db() -> (sqlite3.Connection, sqlite3.Cursor):

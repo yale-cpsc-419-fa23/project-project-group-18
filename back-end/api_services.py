@@ -17,6 +17,24 @@ player_manager = {}
 sid_manager = {}
 
 #test————————————————————————————————
+room_id1 = room_manager.create_new_room('tic-tac-toe')
+is_success = room_manager.player_join_room('1', room_id1)
+is_success = room_manager.player_join_room('2', room_id1)
+
+room_id2 = room_manager.create_new_room('tic-tac-toe')
+is_success = room_manager.player_join_room('3', room_id2)
+
+
+room_id3 = room_manager.create_new_room('tic-tac-toe')
+is_success = room_manager.player_join_room('4', room_id3)
+
+
+room_id4 = room_manager.create_new_room('tic-tac-toe')
+is_success = room_manager.player_join_room('5', room_id4)
+is_success = room_manager.player_join_room('6', room_id4)
+
+room_id5 = room_manager.create_new_room('tic-tac-toe')
+is_success = room_manager.player_join_room('7', room_id5)
 
 #test————————————————————————————————
 
