@@ -9,7 +9,7 @@ class GameState(Enum):
     END = 3
 
 game_type_mapping = {
-    "tic-tac-toe": TicTacToe,
+    "Tic-Tac-Toe": TicTacToe,
 }
     
 
