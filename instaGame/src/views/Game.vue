@@ -1,12 +1,10 @@
 <template>
-	
-	<div>
+	<div id="container">
 		<!-- Game: {{ gameType }} -->
-		<canvas ref="renderCanvas"></canvas>
+		<canvas id="renderCanvas" ref="renderCanvas"></canvas>
 		<p id="message">{{ message }}</p>
 		<button id="leave-button" @click="leaveRoom" v-show="leaveButtonVisible">Leave</button>
-	</div> 
-
+	</div>
 </template>
 
 <script>
@@ -260,18 +258,15 @@
 </script>
 
 <style scoped>
-	html, body {
-		width: 100%;
-		height: 100%;
+	#container {
 		display: flex;
-		align-items: center;
 		justify-content: center;
-		margin: 0;
-		padding: 0;
+		align-items: center;
+		height: 100vh;
 	}
 	#renderCanvas {
-		width: 100%;
-		height: 100%;
+		width: 144%;
+		height: 81%;
 		padding: 0;
 	}
 	#message {
