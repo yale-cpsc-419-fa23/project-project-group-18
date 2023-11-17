@@ -67,7 +67,7 @@ const joinRoom = (roomId) => {
 
 onMounted(() => {
   fetchRooms();
-  setInterval(fetchRooms, 5000);
+  setInterval(fetchRooms, 3000);
 });
 </script>
   
