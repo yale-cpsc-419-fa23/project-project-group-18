@@ -88,3 +88,66 @@ class TicTacToe(Game):
     def game_over(self):
         self.current_state = [['', '', ''], ['', '', ''], ['', '', '']]
         self.current_turn = 'O'
+
+
+
+class Gomoku(Game):
+    def __init__(self, board_size=15):
+        super().__init__()
+        self.board_size = board_size
+        self.current_state = [['' for _ in range(board_size)] for _ in range(board_size)]
+        self.current_turn = 'O'
+
+    def set_players(self, player1, player2):
+        self.player_map = {player1: 'O', player2: 'X'}
+        self.piece_map = {'O': player1, 'X': player2}
+
+    def make_move(self, player, row, col):
+        if self.check_move_validate(player, row, col):
+            self.current_state[row][col] = self.player_map[player]
+            self.next_turn()
+        else:
+            raise ValueError('Invalid move')
+
+    def next_turn(self):
+        self.current_turn = 'X' if self.current_turn == 'O' else 'O'
+
+    def check_move_validate(self, player, row, col):
+        return (0 <= row < self.board_size and 0 <= col < self.board_size and 
+                self.current_state[row][col] == '' and self.current_turn == self.player_map[player])
+
+    def check_winner(self):
+        for row in range(self.board_size):
+            for col in range(self.board_size):
+                if self.current_state[row][col] != '' and self.check_directions_for_winner(row, col):
+                    return self.piece_map[self.current_state[row][col]]
+        return None
+
+    def check_directions_for_winner(self, row, col):
+        directions = [(1, 0), (0, 1), (1, 1), (1, -1)]  # horizontal, vertical, diagonal_down, diagonal_up
+        for dr, dc in directions:
+            if self.count_consecutive_pieces(row, col, dr, dc) >= 5:
+                return True
+        return False
+
+    def count_consecutive_pieces(self, row, col, dr, dc):
+        piece_type = self.current_state[row][col]
+        count = 1
+        for _ in range(1, 5):
+            row += dr
+            col += dc
+            if 0 <= row < self.board_size and 0 <= col < self.board_size and self.current_state[row][col] == piece_type:
+                count += 1
+            else:
+                break
+        return count
+
+    def check_tie(self):
+        return all(cell != '' for row in self.current_state for cell in row)
+
+    def get_state(self):
+        return {'board': self.current_state, 'players': self.players}
+
+    def game_over(self):
+        self.current_state = [['' for _ in range(self.board_size)] for _ in range(self.board_size)]
+        self.current_turn = 'O'
