@@ -148,7 +148,7 @@
 			var scene = new BABYLON.Scene(engine);
 
 			scene.environmentTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
-				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/mvp/front-end/models/textures/environment.env',
+				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/beta/instaGame/src/assets/models/textures/environment.env',
 				scene
 			);
 			const skydome = BABYLON.MeshBuilder.CreateBox('sky', { size: 1000, sideOrientation: BABYLON.Mesh.BACKSIDE }, scene);
@@ -176,7 +176,7 @@
 			checkerboardTask = assetsManager.addMeshTask(
 				'checkboard',
 				'',
-				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/mvp/front-end/models/',
+				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/beta/instaGame/src/assets/models/',
 				'checkerboard.glb'
 			);
 			checkerboardTask.onSuccess = function (task) {
@@ -202,7 +202,7 @@
 			circleTask = assetsManager.addMeshTask(
 				'circle',
 				'',
-				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/mvp/front-end/models/',
+				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/beta/instaGame/src/assets/models/',
 				'circle.glb'
 			);
 			circleTask.onSuccess = function (task) {
@@ -211,7 +211,7 @@
 			crossTask = assetsManager.addMeshTask(
 				'cross',
 				'',
-				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/mvp/front-end/models/',
+				'https://raw.githubusercontent.com/yale-cpsc-419-fa23/project-project-group-18/beta/instaGame/src/assets/models/',
 				'cross.glb'
 			);
 			crossTask.onSuccess = function (task) {
