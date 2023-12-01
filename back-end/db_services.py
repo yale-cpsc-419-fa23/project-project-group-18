@@ -31,23 +31,24 @@ def user_login(username, password):
     return False
 
 
-def user_register(username, password):
+def user_register(username, password, email):
     connection, cursor = connect_db()
     params = {
         'username' : username,
-        'password' : password
+        'password' : password,
+        'email' : email,
     }
     query = '''
     SELECT * FROM users
-    WHERE username = :username;
+    WHERE username = :username or email = :email;
     '''
     cursor.execute(query, params)
     user = cursor.fetchone()
-    if len(user) == 0:
-        print("Username already existed.")
+    if len(user) != 0:
+        print("Username/email already existed.")
         is_success = False
     else:
-        statement = "INSERT INTO users (username, password) VALUES (:username, :password)"
+        statement = "INSERT INTO users (username, password, email) VALUES (:username, :password, :email)"
         cursor.execute(statement, params)
         connection.commit()
         print("New user created.")

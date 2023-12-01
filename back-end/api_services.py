@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
 import uuid
-from db_services import top_n_players, add_player, update_score, user_login
+from db_services import top_n_players, add_player, update_score, user_login, user_register
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -73,6 +73,21 @@ def userlogin():
         response = jsonify(success=True, message="Login successfully.", user_id=user_id)
     else:
         response = jsonify(success=False, message="Wrong username or password.")
+    return response
+
+@app.route('/register', methods=['POST'])
+def userregister():
+    user_id = request.form['user_id']
+    password = request.form['password']
+    email = request.form['email']
+    if not user_id or not password or not email:
+        response = jsonify(success=False, message="Empty username/password/email address.")
+        return response
+    is_success = user_register(user_id, password, email)
+    if is_success:
+        response = jsonify(success=True, message="Register successfully.", user_id=user_id)
+    else:
+        response = jsonify(success=False, message="Existed username or email.")
     return response
 
 
