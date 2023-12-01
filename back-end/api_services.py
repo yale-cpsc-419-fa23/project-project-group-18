@@ -63,7 +63,7 @@ def new_player_id():
 
 @app.route('/login', methods=['POST'])
 def userlogin():
-    user_id = request.form['user_id']
+    user_id = request.form['name']
     password = request.form['password']
     if not user_id or not password:
         response = jsonify(success=False, message="Empty username or password.")

@@ -96,11 +96,11 @@ class Gomoku(Game):
         super().__init__()
         self.board_size = board_size
         self.current_state = [['' for _ in range(board_size)] for _ in range(board_size)]
-        self.current_turn = 'O'
+        self.current_turn = 'Black'
 
     def set_players(self, player1, player2):
-        self.player_map = {player1: 'O', player2: 'X'}
-        self.piece_map = {'O': player1, 'X': player2}
+        self.player_map = {player1: 'Black', player2: 'White'}
+        self.piece_map = {'Black': player1, 'White': player2}
 
     def make_move(self, player, index):
         if self.check_move_validate:
@@ -113,7 +113,7 @@ class Gomoku(Game):
         return self.current_turn
 
     def next_turn(self):
-        self.current_turn = 'X' if self.current_turn == 'O' else 'O'
+        self.current_turn = 'Black' if self.current_turn == 'White' else 'White'
 
     def check_move_validate(self, player, move):
         return True
@@ -155,4 +155,4 @@ class Gomoku(Game):
 
     def game_over(self):
         self.current_state = [['' for _ in range(self.board_size)] for _ in range(self.board_size)]
-        self.current_turn = 'O'
+        self.current_turn = 'Black'
