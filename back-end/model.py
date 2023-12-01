@@ -21,6 +21,7 @@ class GameRoom:
         self.__player_list = []
         self.__max_player_count = 2
         self.__game_state = GameState.WAITING
+        self.__game_type = type
         self.game = game_type_mapping[type]()
         print(f"Game room {id} created.")
     
@@ -58,7 +59,8 @@ class GameRoom:
         return {
             "room_id": self.id,
             "player_count": self.__player_count,
-            "max_player_count": self.__max_player_count
+            "max_player_count": self.__max_player_count,
+            "game_type": self.__game_type
         }
     
     def check_full(self):
