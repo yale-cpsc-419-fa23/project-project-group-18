@@ -103,17 +103,17 @@
 		placePiece(idx, piece) {
 			var position = cells[idx].position;
 			cells[idx].occupied = true;
-			var newPiece = pieceTask.loadedMeshes[0].getChildren()[0].createInstance();
-			newPiece.position = position;
-			newPiece.scaling.x *= 0.6;
-			newPiece.scaling.y *= 0.3;
-			newPiece.scaling.z *= 0.6;
-			console.log(newPiece);
 			if (piece == 'O') {
-				
+				var newPiece = pieceTask.loadedMeshes[0].getChildren()[0].createInstance();
+				console.log(newPiece.material);
 			} else if (piece == 'X') {
-				
+				var newPiece = pieceTask.loadedMeshes[1].getChildren()[0].createInstance();
+				console.log(newPiece.material);
 			}
+			newPiece.position = position;
+			newPiece.scaling.x /= 5.0;
+			newPiece.scaling.y *= 0.3;
+			newPiece.scaling.z /= 5.0;
 		},
 		updateMessage(newMessage) {
 			this.$emit('updateMessage', newMessage);
@@ -156,14 +156,14 @@
 			gomokuboardTask.onSuccess = function (task) {
 				var gomokuboard = task.loadedMeshes[0];
 				gomokuboard.position = new BABYLON.Vector3(0, 0, 0);
-				gomokuboard.scaling.x = 2.0;
-				gomokuboard.scaling.z = 2.0;
+				gomokuboard.scaling.x = 2;
+				gomokuboard.scaling.z = 2;
 				const boundingBox = gomokuboard.getChildren()[0].getBoundingInfo().boundingBox;
-				const cellSize = (Math.max(boundingBox.maximumWorld.x - boundingBox.minimumWorld.x, boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) / 15.0) * 0.8;
+				const cellSize = (Math.max(boundingBox.maximumWorld.x - boundingBox.minimumWorld.x, boundingBox.maximumWorld.z - boundingBox.minimumWorld.z) / 15.0) * 2;
 				for (let i = 0; i < 15; i++) {
 					for (let j = 0; j < 15; j++) {
-						const x = boundingBox.minimumWorld.x * 0.8 + i * cellSize + cellSize / 2;
-						const z = boundingBox.minimumWorld.z * 0.8 + j * cellSize + cellSize / 2;
+						const x = boundingBox.minimumWorld.x * 2 + i * cellSize + cellSize / 2;
+						const z = boundingBox.minimumWorld.z * 2 + j * cellSize + cellSize / 2;
 
 						const cell = {
 						position: new BABYLON.Vector3(x, boundingBox.maximumWorld.y, z),
@@ -181,6 +181,9 @@
 			);
 			pieceTask.onSuccess = function (task) {
 				task.loadedMeshes[0].setEnabled(false);
+				task.loadedMeshes[1] = task.loadedMeshes[0].clone();
+				pieceTask.loadedMeshes[0].getChildren()[0].material = pieceTask.loadedMeshes[0].getChildren()[0].material.clone();
+				pieceTask.loadedMeshes[0].getChildren()[0].material.albedoColor = BABYLON.Color3.FromHexString("#FFFFFF");
 			};
 			assetsManager.onFinish = function (tasks) {
 				canvas.addEventListener('click', (event) => {
