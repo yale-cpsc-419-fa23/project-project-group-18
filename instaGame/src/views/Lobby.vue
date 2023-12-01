@@ -13,8 +13,12 @@
         </div>
         <button v-else @click="showLogin()" class="login-btn">Login</button>
       </v-col>
-    </v-row>
 
+
+    </v-row>
+    <v-col cols ="6 " class="test-log-out">
+        <button @click="testlogout()">Test Logout</button>
+      </v-col>
     <!-- Leader Board -->
     <v-row>
       <v-col cols="6">
@@ -53,6 +57,11 @@ const router = useRouter();
 
 const showLoginPopup = ref(false);
 const userName = ref('');
+
+const testlogout = () => {
+  localStorage.removeItem('userName');
+  userName.value = '';
+}
 
 const showLogin = () => {
   showLoginPopup.value = true
