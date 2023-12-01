@@ -198,7 +198,7 @@
 				task.loadedMeshes[0].setEnabled(false);
 			};
 			assetsManager.onFinish = function (tasks) {
-				canvas.addEventListener('click', (event) => {
+				canvas.addEventListener('dblclick', (event) => {
 					if (!turn) return;
 					var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 					if (pickResult.hit && pickResult.pickedMesh && pickResult.pickedMesh.name === 'Checkerboard') {

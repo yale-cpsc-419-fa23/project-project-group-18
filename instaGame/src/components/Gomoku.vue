@@ -105,10 +105,8 @@
 			cells[idx].occupied = true;
 			if (piece == 'O') {
 				var newPiece = pieceTask.loadedMeshes[0].getChildren()[0].createInstance();
-				console.log(newPiece.material);
 			} else if (piece == 'X') {
 				var newPiece = pieceTask.loadedMeshes[1].getChildren()[0].createInstance();
-				console.log(newPiece.material);
 			}
 			newPiece.position = position;
 			newPiece.scaling.x /= 5.0;
@@ -186,7 +184,7 @@
 				pieceTask.loadedMeshes[0].getChildren()[0].material.albedoColor = BABYLON.Color3.FromHexString("#FFFFFF");
 			};
 			assetsManager.onFinish = function (tasks) {
-				canvas.addEventListener('click', (event) => {
+				canvas.addEventListener('dblclick', (event) => {
 					if (!turn) return;
 					var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 					if (pickResult.hit && pickResult.pickedMesh && pickResult.pickedMesh.name === 'GomokuBoard') {
