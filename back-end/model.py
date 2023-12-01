@@ -1,6 +1,6 @@
 from enum import Enum
 import random
-from game import TicTacToe
+from game import TicTacToe, Gomoku
 
 
 class GameState(Enum):
@@ -10,6 +10,7 @@ class GameState(Enum):
 
 game_type_mapping = {
     "Tic-Tac-Toe": TicTacToe,
+    "Gomoku": Gomoku,
 }
     
 

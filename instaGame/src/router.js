@@ -4,7 +4,7 @@ import Game from './views/Game.vue';
 
 const routes = [
   { path: '/', component: Lobby },
-  { path: '/game', component: Game },
+  { path: '/game', component: Game, props: route => ({ gameType: route.query.gameType }) },
   // ... other routes
 ];
 

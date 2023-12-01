@@ -56,7 +56,7 @@ const joinRoom = (roomId) => {
     if (data.success) {
       let room_id = data.room_id;
       document.cookie = `room_id=${room_id}`;
-      let gameType = 'TicTacToe';
+      let gameType = 'Tic-Tac-Toe';
       router.push({ path: '/game', query: { gameType: gameType } });
     } else {
       alert(data.message);

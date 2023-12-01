@@ -2,7 +2,7 @@
     <div>
         <v-select
           label="SelectGame"
-          :items="['Tic-Tac-Toe', 'Others']"
+          :items="['Tic-Tac-Toe', 'Gomoku', 'Others']"
           variant="solo-inverted"
           v-model = "selectedGame"
         ></v-select>
