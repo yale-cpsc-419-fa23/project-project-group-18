@@ -12,7 +12,7 @@
         <td>{{ room.room_id }}</td>
         <td>{{ room.player_count }}/{{ room.max_player_count }}</td>
         <td>
-          <v-btn class="join-button" @click="joinRoom(room.room_id)">
+          <v-btn class="join-button" @click="joinRoom(room.room_id, room.game_type)">
           Join
           </v-btn>
         </td>
@@ -40,7 +40,7 @@ const fetchRooms = () => {
     .catch(error => console.error('Error:', error));
 };
 
-const joinRoom = (roomId) => {
+const joinRoom = (roomId, roomType) => {
   console.log('join room');
   let player_id = get_cookie('player_id');
   fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/joinroom`, {
@@ -56,8 +56,8 @@ const joinRoom = (roomId) => {
     if (data.success) {
       let room_id = data.room_id;
       document.cookie = `room_id=${room_id}`;
-      let gameType = 'Tic-Tac-Toe';
-      router.push({ path: '/game', query: { gameType: gameType } });
+      console.log(roomList);
+      router.push({ path: '/game', query: { gameType: roomType } });
     } else {
       alert(data.message);
     }

@@ -102,19 +102,21 @@ class Gomoku(Game):
         self.player_map = {player1: 'O', player2: 'X'}
         self.piece_map = {'O': player1, 'X': player2}
 
-    def make_move(self, player, row, col):
-        if self.check_move_validate(player, row, col):
-            self.current_state[row][col] = self.player_map[player]
+    def make_move(self, player, index):
+        if self.check_move_validate:
+            self.current_state[index // self.board_size][index % self.board_size] = self.player_map[player]
             self.next_turn()
         else:
-            raise ValueError('Invalid move')
+            raise ValueError('The move is not valid')
+        
+    def get_current_turn(self):
+        return self.current_turn
 
     def next_turn(self):
         self.current_turn = 'X' if self.current_turn == 'O' else 'O'
 
-    def check_move_validate(self, player, row, col):
-        return (0 <= row < self.board_size and 0 <= col < self.board_size and 
-                self.current_state[row][col] == '' and self.current_turn == self.player_map[player])
+    def check_move_validate(self, player, move):
+        return True
 
     def check_winner(self):
         for row in range(self.board_size):
@@ -147,6 +149,9 @@ class Gomoku(Game):
 
     def get_state(self):
         return {'board': self.current_state, 'players': self.players}
+    
+    def get_player_piece_map(self):
+        return self.player_map
 
     def game_over(self):
         self.current_state = [['' for _ in range(self.board_size)] for _ in range(self.board_size)]

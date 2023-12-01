@@ -4,7 +4,7 @@
 			<TicTacToe :socket="socket" :room_id="room_id" :player_id="player_id" :message="message" @updateMessage="updateMessage" @showLeave="showLeave"/>
 		</template>
 		<template v-else-if="this.gameType === 'Gomoku'">
-			<Gomoku :socket="socket" :room_id="room_id" :player_id="player_id"/>
+			<Gomoku :socket="socket" :room_id="room_id" :player_id="player_id" :message="message" @updateMessage="updateMessage" @showLeave="showLeave"/>
 		</template>
 		<p id="message">{{ message }}</p>
 		<button id="leave-button" @click="leaveRoom" v-show="leaveButtonVisible">Leave</button>
