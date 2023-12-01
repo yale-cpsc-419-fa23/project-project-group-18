@@ -18,20 +18,32 @@
       </v-col>
 
     </v-row>
+    <!-- Login -->
+    <button @click="showLogin()">Login</button>
+    <LoginPopup v-model="showLoginPopup" />
+
   </div> 
 </template>
   
 <script setup>
-import RoomList from '../components/RoomList.vue'
-import LeaderBoard from '../components/LeaderBoard.vue'
-import SelectGame from '../components/SelectGame.vue';
+import RoomList from '@/components/RoomList.vue'
+import LeaderBoard from '@/components/LeaderBoard.vue'
+import SelectGame from '@/components/SelectGame.vue';
+import LoginPopup from '@/components/LoginPopup.vue';
 import { ref, onMounted } from 'vue';
-import { SERVER_ADDRESS } from '../config.js';
+import { SERVER_ADDRESS } from '@/config.js';
 import { useRouter } from 'vue-router';
 import { get_cookie } from '@/utils';
 
+
 const router = useRouter();
 
+const showLoginPopup = ref(false);
+
+const showLogin = () => {
+  showLoginPopup.value = true
+  console.log(showLoginPopup.value)
+}
 
 const testLogin = () => {
   let player_id = get_cookie('player_id');
