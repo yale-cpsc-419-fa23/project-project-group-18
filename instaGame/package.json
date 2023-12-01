@@ -10,6 +10,7 @@
   "dependencies": {
     "@babylonjs/core": "^6.30.0",
     "@babylonjs/loaders": "^6.30.0",
+    "@mdi/font": "^7.3.67",
     "babylonjs": "^6.30.0",
     "babylonjs-loaders": "^6.30.0",
     "socket.io": "^4.7.2",
