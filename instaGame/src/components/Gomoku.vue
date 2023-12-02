@@ -103,9 +103,9 @@
 		placePiece(idx, piece) {
 			var position = cells[idx].position;
 			cells[idx].occupied = true;
-			if (piece == 'O') {
+			if (piece == 'White') {
 				var newPiece = pieceTask.loadedMeshes[0].getChildren()[0].createInstance();
-			} else if (piece == 'X') {
+			} else if (piece == 'Black') {
 				var newPiece = pieceTask.loadedMeshes[1].getChildren()[0].createInstance();
 			}
 			newPiece.position = position;
