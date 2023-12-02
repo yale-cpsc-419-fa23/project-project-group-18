@@ -1,4 +1,5 @@
 @import './base.css';
+@import '@mdi/font/css/materialdesignicons.css';
 
 #app {
   max-width: 1280px;
@@ -24,8 +25,8 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
-    place-items: center;
+    /* display: flex;
+    place-items: center; */
   }
 
   #app {

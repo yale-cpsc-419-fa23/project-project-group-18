@@ -7,7 +7,7 @@ DB_PATH = os.path.dirname(__file__)+'/database.sqlite'
 def user_login(username, password):
     connection, cursor = connect_db()
     params = {
-        'username' : username,
+        'username' : str(username),
     }
     query = '''
     SELECT password FROM users
@@ -15,6 +15,7 @@ def user_login(username, password):
     '''
     cursor.execute(query, params)
     user = cursor.fetchone()
+    print(user)
     close_connection(connection, cursor)
     if not user:
         print("Username not existed.")
@@ -34,17 +35,17 @@ def user_login(username, password):
 def user_register(username, password, email):
     connection, cursor = connect_db()
     params = {
-        'username' : username,
-        'password' : password,
-        'email' : email,
+        'username' : str(username),
+        'password' : str(password),
+        'email' : str(email),
     }
     query = '''
     SELECT * FROM users
-    WHERE username = :username or email = :email;
+    WHERE username = :username OR email = :email;
     '''
     cursor.execute(query, params)
     user = cursor.fetchone()
-    if len(user) != 0:
+    if user:
         print("Username/email already existed.")
         is_success = False
     else:
@@ -127,3 +128,8 @@ def close_connection(connection: sqlite3.Connection, cursor: sqlite3.Cursor):
         connection.close()
     except sqlite3.Error as e:
         print(e, file=stderr)
+
+
+if __name__ == '__main__':
+    user_register('sauki3', '123456', 'sauki@yale.edu')
+    user_login('sauki3', '123456')

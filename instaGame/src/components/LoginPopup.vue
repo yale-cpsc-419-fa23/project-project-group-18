@@ -43,7 +43,7 @@ import { ref, watch} from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 
 const props = defineProps(['modelValue']);
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'login-success']);
 
 const showLoginPopup = ref(props.modelValue);
 const isLoginView = ref(true); // New state to track the current view
@@ -69,11 +69,15 @@ const handleLogin = () => {
     headers: {
     'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username: username, password: password})
+    body: JSON.stringify({ username: username.value, password: password.value})
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data)
+    if (data.success) {
+      console.log('login success', data.user_id);
+      localStorage.setItem('userName', data.user_id);
+      emit('login-success', data.user_id);
+    }
   })
   .catch(error => console.error('Error:', error));
 };
