@@ -63,8 +63,9 @@ def new_player_id():
 
 @app.route('/login', methods=['POST'])
 def userlogin():
-    user_id = request.form['name']
-    password = request.form['password']
+    data = request.json
+    user_id = data['username']
+    password = data['password']
     if not user_id or not password:
         response = jsonify(success=False, message="Empty username or password.")
         return response
@@ -77,9 +78,10 @@ def userlogin():
 
 @app.route('/register', methods=['POST'])
 def userregister():
-    user_id = request.form['user_id']
-    password = request.form['password']
-    email = request.form['email']
+    data = request.json
+    user_id = data['username']
+    password = data['password']
+    email = data['email']
     if not user_id or not password or not email:
         response = jsonify(success=False, message="Empty username/password/email address.")
         return response
