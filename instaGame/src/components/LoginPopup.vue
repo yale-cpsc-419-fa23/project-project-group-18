@@ -77,6 +77,9 @@ const handleLogin = () => {
       console.log('login success', data.user_id);
       localStorage.setItem('userName', data.user_id);
       emit('login-success', data.user_id);
+      emit('update:modelValue',false);
+    } else {
+      alert(data.message);
     }
   })
   .catch(error => console.error('Error:', error));
@@ -88,12 +91,18 @@ const handleRegister = () => {
     headers: {
     'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username: username, password: password, email:email })
+    body: JSON.stringify({ username: username.value, password: password, email:email })
   })
   .then(response => response.json())
   .then(data => {
-    console.log(data)
-    console.log(room_id)
+    if (data.success) {
+      console.log('login success', data.user_id);
+      localStorage.setItem('userName', data.user_id);
+      emit('login-success', data.user_id);
+      emit('update:modelValue',false);
+    } else {
+      alert(data.message);
+    }
   })
   .catch(error => console.error('Error:', error));
 };

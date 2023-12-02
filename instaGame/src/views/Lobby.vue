@@ -24,7 +24,10 @@
       <v-col cols="6">
         <RoomList />
 
-        <SelectGame />
+        <!-- <SelectGame /> -->
+        <v-btn variant="tonal" @click="showCreateRoomModal">
+          Create Room
+        </v-btn>
       </v-col>
 
       <v-col cols="3" class="leaderboard-col">
@@ -37,6 +40,7 @@
     </v-row>
     <LoginPopup @login-success="handleLoginSuccess" v-model="showLoginPopup" />
     <!-- <LoginTest v-model="showLoginPopup" /> -->
+    <CreateRoom v-model="showCreateRoom"></CreateRoom>
 
   </div> 
 </template>
@@ -46,6 +50,7 @@ import RoomList from '@/components/RoomList.vue'
 import LeaderBoard from '@/components/LeaderBoard.vue'
 import SelectGame from '@/components/SelectGame.vue';
 import LoginPopup from '@/components/LoginPopup.vue';
+import CreateRoom from '@/components/CreateRoom.vue';
 import { ref, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '@/config.js';
 import { useRouter } from 'vue-router';
@@ -56,7 +61,12 @@ import { get_cookie } from '@/utils';
 const router = useRouter();
 
 const showLoginPopup = ref(false);
+const showCreateRoom = ref(false);
 const userName = ref('');
+
+const showCreateRoomModal = () => {
+  showCreateRoom.value = true;
+}
 
 const testlogout = () => {
   localStorage.removeItem('userName');
@@ -64,8 +74,7 @@ const testlogout = () => {
 }
 
 const showLogin = () => {
-  showLoginPopup.value = true
-  console.log(showLoginPopup.value)
+  showLoginPopup.value = true;
 }
 
 const handleLoginSuccess = (userId) => {
