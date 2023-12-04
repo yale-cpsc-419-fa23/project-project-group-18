@@ -2,6 +2,9 @@
   <v-table fixed-header height="500px">
     <thead>
       <tr>
+        <th colspan="3"><h2>Room List</h2></th>
+      </tr>
+      <tr>
         <th class="text-left">Room ID</th>
         <th class="text-left">Players</th>
         <th class="text-left"></th>
