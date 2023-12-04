@@ -20,7 +20,7 @@
           </v-row>
 
           <v-row justify="center">
-            <v-btn type="submit" color="primary">{{ isLoginView ? 'Login' : 'Register' }}</v-btn>
+            <v-btn type="submit" color="primary" variant="tonal">{{ isLoginView ? 'Login' : 'Register' }}</v-btn>
           </v-row>
 
         </form>

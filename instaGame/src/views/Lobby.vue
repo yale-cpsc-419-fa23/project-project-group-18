@@ -2,23 +2,21 @@
   <div>
     <!-- Top Bar -->
     <v-row class="top-bar">
-      <v-col cols="6" class="logo-col">
+      <v-col cols="8" class="logo-col">
         <!-- <img src="path" alt="Logo" /> -->
       </v-col>
 
-      <v-col cols="6" class="login-btn-col">
+      <v-col cols="4" class="login-btn-col">
         <!-- Login -->
         <div v-if="userName" class="user-name-display">
-          Welcome, {{ userName }}
+          Welcome, <span class="user-name" @click="showProfileMenu()">{{ userName }}</span>
         </div>
-        <button v-else @click="showLogin()" class="login-btn">Login</button>
+        <v-btn v-else @click="showLogin()" class="login-btn">Login</v-btn>
+        <v-btn v-if="userName" @click="testlogout()" class="logout-btn" variant="tonal">Logout</v-btn>
       </v-col>
 
 
     </v-row>
-    <v-col cols ="6 " class="test-log-out">
-        <button @click="testlogout()">Test Logout</button>
-      </v-col>
     <!-- Leader Board -->
     <v-row>
       <v-col cols="6">
@@ -77,6 +75,10 @@ const showLogin = () => {
   showLoginPopup.value = true;
 }
 
+const showProfileMenu = () => {
+  
+}
+
 const handleLoginSuccess = (userId) => {
   userName.value = userId;
   showLoginPopup.value = false;
@@ -130,5 +132,14 @@ onMounted(() => {
     display: flex;
     justify-content: flex-end; /* Align the button to the right */
     align-items: center; /* Vertically center the button */
+  }
+
+  .user-name-display {
+    font-size: large;
+    padding-right: 10px;
+  }
+
+  .user-name {
+    font-weight: bold;
   }
 </style>
