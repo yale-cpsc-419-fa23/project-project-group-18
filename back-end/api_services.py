@@ -116,6 +116,8 @@ def create_new_room():
     data = request.json
     player_id = data['player_id']
     game_type = data['game_type']
+    has_password = data['has_password']
+    room_name = data['room_name']
     if not player_id:
         response = jsonify(success=False, message="Illegal player ID")
         return response
@@ -123,6 +125,12 @@ def create_new_room():
     if player_id in player_manager:
         response = jsonify(success=False, message="Already in a room")
         return response
+    
+    if has_password:
+        print("Room has Password")
+        password = data['password']
+        print(password)
+    
     
     room_id = room_manager.create_new_room(game_type)
     is_success = room_manager.player_join_room(player_id, room_id)

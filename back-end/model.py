@@ -12,7 +12,7 @@ game_type_mapping = {
     "Tic-Tac-Toe": TicTacToe,
     "Gomoku": Gomoku,
 }
-    
+
 
 class GameRoom:
     def __init__(self, id, type):
