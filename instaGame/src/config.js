@@ -1,4 +1,4 @@
 export const SERVER_ADDRESS = {
-    IP: '172.27.83.200',
+    IP: '192.168.4.50',
     PORT: '5001',
 };

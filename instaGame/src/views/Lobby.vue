@@ -29,20 +29,23 @@
     <v-row>
       <v-col cols="6">
         <RoomList />
+      </v-col>
 
+      <v-col cols="1"></v-col>
+      
+      <v-col cols="4" class="leaderboard-col">
+        <LeaderBoard />
+      </v-col>
+
+    </v-row>
+    <v-row>
+      <v-col cols="2"></v-col>
+      <v-col cols="4">
         <!-- <SelectGame /> -->
         <v-btn variant="tonal" @click="showCreateRoomModal">
           Create Room
         </v-btn>
       </v-col>
-
-      <v-col cols="3" class="leaderboard-col">
-
-        <div class="leaderboard">
-        <LeaderBoard />
-        </div>
-      </v-col>
-
     </v-row>
     <LoginPopup @login-success="handleLoginSuccess" v-model="showLoginPopup" />
     <!-- <LoginTest v-model="showLoginPopup" /> -->
@@ -126,10 +129,6 @@ onMounted(() => {
 </script>
 
 <style>
-  .leaderboard-col {
-    max-height: 50vh;
-    overflow: auto; /*for scroll if content exceeds max height */
-  }
   .top-bar {
   padding: 10px;
 }

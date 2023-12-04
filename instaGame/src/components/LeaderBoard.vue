@@ -1,25 +1,22 @@
 <!-- LeaderBoard.vue -->
 <template>
-    <div id="leaderboard">
-      <v-table fixed-header height="500px" v-if="leaderboardData.length > 0">
-
-        <thead>
-          <tr>
-            <th colspan="2"><h2>Leader Board</h2></th>
-          </tr>
-          <tr>
-            <th>Player ID</th>
-            <th>Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in leaderboardData" :key="row.player_id">
-            <td>{{ row.player_id.slice(0,6) }}</td>
-            <td>{{ row.score }}</td>
-          </tr>
-        </tbody>
-      </v-table>
-    </div>
+  <v-table fixed-header height="500px" v-if="leaderboardData.length > 0">
+    <thead>
+      <tr>
+        <th colspan="2"><h2>Leader Board</h2></th>
+      </tr>
+      <tr>
+        <th>Player ID</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="row in leaderboardData" :key="row.player_id">
+        <td>{{ row.player_id.slice(0,6) }}</td>
+        <td>{{ row.score }}</td>
+      </tr>
+    </tbody>
+  </v-table>
 </template>
   
 <script setup>
