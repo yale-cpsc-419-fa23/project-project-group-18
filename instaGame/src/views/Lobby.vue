@@ -9,10 +9,18 @@
       <v-col cols="4" class="login-btn-col">
         <!-- Login -->
         <div v-if="userName" class="user-name-display">
-          Welcome, <span class="user-name" @click="showProfileMenu()">{{ userName }}</span>
+          <v-menu v-model="menu" :close-on-content-click="false">
+            <template v-slot:activator="{ props }">
+              <!-- <v-btn color="indigo" v-bind="props">
+                Profile
+              </v-btn> -->
+              Welcome, <span class="user-name" v-bind="props" @click="showProfileMenu">{{ userName }}</span>
+            </template>
+            <profile-menu @logout="handleLogout"></profile-menu>
+          </v-menu>
+          
         </div>
         <v-btn v-else @click="showLogin()" class="login-btn">Login</v-btn>
-        <v-btn v-if="userName" @click="testlogout()" class="logout-btn" variant="tonal">Logout</v-btn>
       </v-col>
 
 
@@ -49,6 +57,7 @@ import LeaderBoard from '@/components/LeaderBoard.vue'
 import SelectGame from '@/components/SelectGame.vue';
 import LoginPopup from '@/components/LoginPopup.vue';
 import CreateRoom from '@/components/CreateRoom.vue';
+import ProfileMenu from '@/components/ProfileMenu.vue';
 import { ref, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '@/config.js';
 import { useRouter } from 'vue-router';
@@ -60,13 +69,14 @@ const router = useRouter();
 
 const showLoginPopup = ref(false);
 const showCreateRoom = ref(false);
+const menu = ref(false);
 const userName = ref('');
 
 const showCreateRoomModal = () => {
   showCreateRoom.value = true;
 }
 
-const testlogout = () => {
+const handleLogout = () => {
   localStorage.removeItem('userName');
   userName.value = '';
 }
@@ -76,7 +86,8 @@ const showLogin = () => {
 }
 
 const showProfileMenu = () => {
-  
+  menu.value = true;
+  console.log("show profile");
 }
 
 const handleLoginSuccess = (userId) => {
@@ -135,11 +146,16 @@ onMounted(() => {
   }
 
   .user-name-display {
-    font-size: large;
+    font-size: medium;
     padding-right: 10px;
   }
 
   .user-name {
     font-weight: bold;
+  }
+
+  .user-name:hover {
+    cursor: pointer;
+    text-decoration: underline;
   }
 </style>
