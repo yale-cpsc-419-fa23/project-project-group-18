@@ -1,5 +1,5 @@
 <template>
-	<div id="gomoku">
+	<div id="gameContainer">
 		<canvas id="renderCanvas" ref="renderCanvas"></canvas>
 	</div>
 </template>
@@ -9,6 +9,7 @@
 	import 'babylonjs-loaders';
 	import { ref } from 'vue';
 	import { useRouter } from 'vue-router';
+	import LoadingScreen from '../scripts/LoadingScreen.js';
 	
 	const router = useRouter();
 	const gameType = ref('');
@@ -30,6 +31,10 @@
 		initialize() {
 			const canvas = this.$refs.renderCanvas;
 			engine = new BABYLON.Engine(canvas, true);
+			var loadingScreen = new LoadingScreen("I'm loading!!");
+			engine.loadingScreen = loadingScreen;
+			engine.displayLoadingUI();
+			
 			scene = this.createScene(canvas, engine);
 
 			this.$nextTick(() => {
@@ -207,7 +212,7 @@
 </script>
 
 <style scoped>
-	#gomoku {
+	#gameContainer {
 		display: flex;
 		justify-content: center;
 		align-items: center;
