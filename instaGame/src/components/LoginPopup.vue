@@ -39,7 +39,7 @@
 
   
 <script setup>
-import { ref, watch} from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 
 const props = defineProps(['modelValue']);
@@ -53,6 +53,11 @@ const email = ref(''); // For registration
 
 watch(() => props.modelValue, (newValue) => {
   showLoginPopup.value = newValue;
+  if (newValue) { // clean previouse input
+    // username.value = '';
+    password.value = '';
+    email.value = '';
+  }
 });
 
 const toggleView = () => {
