@@ -5,6 +5,7 @@
         <th colspan="3"><h2>Room List</h2></th>
       </tr>
       <tr>
+        <th class="text-left">Room Name</th>
         <th class="text-left">Room ID</th>
         <th class="text-left">Players</th>
         <th class="text-left"></th>
@@ -12,6 +13,10 @@
     </thead>
     <tbody>
       <tr v-for="room in roomList" :key="room.room_id">
+        <td>
+          <!-- <v-icon v-if="room.has_password" dark>fas fa-lock</v-icon> -->
+          {{ room.room_name }}
+        </td>
         <td>{{ room.room_id }}</td>
         <td>{{ room.player_count }}/{{ room.max_player_count }}</td>
         <td>
