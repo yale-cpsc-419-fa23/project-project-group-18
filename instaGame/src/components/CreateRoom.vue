@@ -85,15 +85,13 @@ const close = () => {
   emit('update:modelValue', false);
 };
 
-const createNewRoom = () => {
+const createNewRoom = async () => {
   if (form.value) {
-    form.value.validate()
-    .then(valid => {
-      if (!valid.valid) {
-        console.log("form invalid");
-        return;
-      }
-    })
+    const isValid = await form.value.validate();
+    if (!isValid.valid) {
+      console.log("Form is invalid");
+      return;
+    }
   }
 
   console.log("valid, create room");
