@@ -12,7 +12,7 @@
                 </v-col> -->
             </v-card-title>
             <v-card-text>
-                <v-form ref="form">
+                <v-form ref="form" @submit.prevent="createNewRoom">
                     <v-text-field
                         v-model="name"
                         :counter="10"
@@ -24,7 +24,7 @@
                     <v-select
                         v-model="gameType"
                         :items="items"
-                        :rules="[v => !!v || 'Game Type is required']"
+                        :rules="gameTypeRules"
                         label="Game Type"
                         required
                     ></v-select>
@@ -32,11 +32,11 @@
                     <v-checkbox
                         v-model="needPassword"
                         label="Add a password?"
-                        required
                     ></v-checkbox>
 
                     <v-text-field
                         v-if="needPassword"
+                        :rules="passwordRules"
                         label="Password"
                         v-model="password"
                         type="password"
@@ -44,7 +44,7 @@
                     ></v-text-field>
 
                     <div class="d-flex flex-column">
-                        <v-btn color="success" class="mt-4" block @click="createNewRoom" variant="tonal">
+                        <v-btn type="submit" color="success" class="mt-4" block variant="tonal" >
                         Create
                         </v-btn>
                     </div>
@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import {ref, watch} from 'vue';
+import {ref, watch, computed} from 'vue';
 import { SERVER_ADDRESS } from '../config.js';
 import { get_cookie } from '@/utils';
 import { useRouter } from 'vue-router';
@@ -64,11 +64,16 @@ const router = useRouter();
 const props = defineProps(['modelValue']);
 const emit = defineEmits(['update:modelValue', 'login-success']);
 const showCreateRoom = ref(props.modelValue);
+const form = ref(null);
+const isFormValid = computed(() => form.value?.validate());
 
 const name = ref('');
 const gameType = ref(null);
 const nameRules = [v => (v && v.length <= 10) || 'Name must be less than 10 characters'];
+const gameTypeRules = [v => !!v || 'Game Type is required'];
+const passwordRules = [v => !needPassword.value || (v && v.length > 0) || 'Password is required'];
 const items = ['Tic-Tac-Toe', 'Gomoku'];
+
 const needPassword = ref(false);
 const password = ref('');
 
@@ -80,8 +85,16 @@ const close = () => {
   emit('update:modelValue', false);
 };
 
-const createNewRoom = () => {
-  console.log("Create New Room");
+const createNewRoom = async () => {
+  if (form.value) {
+    const isValid = await form.value.validate();
+    if (!isValid.valid) {
+      console.log("Form is invalid");
+      return;
+    }
+  }
+
+  console.log("valid, create room");
   let userName = localStorage.getItem('userName') || '';
   if (!userName) {
     userName = get_cookie('player_id');

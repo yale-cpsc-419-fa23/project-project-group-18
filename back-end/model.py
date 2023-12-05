@@ -15,14 +15,19 @@ game_type_mapping = {
 
 
 class GameRoom:
-    def __init__(self, id, type):
+    def __init__(self, id, room_name, game_type, has_password, password):
         self.id = id
         self.__player_count = 0
         self.__player_list = []
         self.__max_player_count = 2
         self.__game_state = GameState.WAITING
-        self.__game_type = type
-        self.game = game_type_mapping[type]()
+        self.__password = ""
+        self.room_name = room_name
+        self.game_type = game_type
+        self.has_password = has_password
+        self.game = game_type_mapping[game_type]()
+        if self.has_password:
+            self.__password = password
         print(f"Game room {id} created.")
     
     def join_player(self, player):
@@ -30,8 +35,23 @@ class GameRoom:
             self.__player_count += 1
             self.__player_list.append(player)
             print(f"{player} joins the room {self.id}.")
+            return True
         else:
             print("Fail to join the room.")
+            return False
+    
+    def join_player_with_password(self, player, password):
+        if self.is_join_available():
+            if password == self.__password:
+                self.__player_count += 1
+                self.__player_list.append(player)
+                print(f"{player} joins the room {self.id}.")
+                return True
+            else:
+                print("Password wrong.")
+        else:
+            print("Fail to join the room.")
+        return False
 
     def leave_player(self, player):
         if player in self.__player_list:
@@ -55,14 +75,6 @@ class GameRoom:
         else:
             return True
     
-    def to_json(self):
-        return {
-            "room_id": self.id,
-            "player_count": self.__player_count,
-            "max_player_count": self.__max_player_count,
-            "game_type": self.__game_type
-        }
-    
     def check_full(self):
         return self.__player_count == self.__max_player_count
     
@@ -80,7 +92,18 @@ class GameRoom:
         self.__game_state = GameState.END
         self.game.game_over()
     
+    def if_has_password(self):
+        return self.has_password
     
+    def to_json(self):
+        return {
+            "room_id": self.id,
+            "room_name": self.room_name,
+            "player_count": self.__player_count,
+            "max_player_count": self.__max_player_count,
+            "game_type": self.game_type,
+            "has_password": self.has_password
+        }
     
 
 class GameRoomManager:
@@ -97,28 +120,29 @@ class GameRoomManager:
             return self.rooms[room_id]
         print(f"No room {room_id}")
 
-    def create_new_room(self, game_type):
+    def create_new_room(self, room_name, game_type, has_password, password):
         new_room_id = self.generate_room_id()
         while new_room_id in self.rooms:
             new_room_id = self.generate_room_id()
         
         
-        self.rooms[new_room_id] = GameRoom(new_room_id, game_type)
+        self.rooms[new_room_id] = GameRoom(new_room_id, room_name, game_type, has_password, password)
             
         self.room_count += 1
         return new_room_id
     
-    def player_join_room(self, player_id, room_id):
+    def player_join_room(self, player_id, room_id, password = ""):
         if(room_id not in self.rooms):
             print(f"Room: {room_id} is not existed.")
             return False
         else:
             room = self.rooms[room_id]
-            if(room.is_join_available()):
-                room.join_player(player_id)
-                return True
-            else:
-                return False
+            if room.if_has_password():
+                success = room.join_player_with_password(player_id, password)
+            else:   
+                success = room.join_player(player_id)
+            return success
+
     
     def player_leave_room(self, player_id, room_id):
         if room_id not in self.rooms:
