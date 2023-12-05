@@ -41,6 +41,9 @@
 			player_id = this.player_id;
 			room_id = this.room_id;
 			socket = this.socket;
+			let userName = localStorage.getItem('userName') || '';
+			if (userName != '')
+				player_id = userName;
             socket.emit('joinroom', { player_id: player_id, room_id: room_id });
             socket.on('joinroom_message', (data) => {
                 if (data.is_success === true) {

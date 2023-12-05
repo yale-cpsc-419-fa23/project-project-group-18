@@ -38,7 +38,11 @@
 			scene = this.createScene(canvas, engine);
 
 			this.$nextTick(() => {
-				player_id = this.player_id;
+				let userName = localStorage.getItem('userName') || '';
+				if (userName != '')
+					player_id = userName;
+				else
+					player_id = this.player_id;
 				room_id = this.room_id;
 				this.socket.on('gamestart_message', (data) => {
 				this.updateMessage(data.message);

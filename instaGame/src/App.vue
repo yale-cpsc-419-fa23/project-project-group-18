@@ -32,7 +32,7 @@ watchEffect(() => {
 #top-left-icon {
   position: absolute;
   top: 1%;
-  left: 15%;
+  left: 20%;
   max-width: 50px !important;
   max-height: 50px !important;
   /* width: 50px; 
