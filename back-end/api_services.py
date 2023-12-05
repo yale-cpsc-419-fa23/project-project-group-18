@@ -17,6 +17,7 @@ player_manager = {}
 sid_manager = {}
 
 #test————————————————————————————————
+'''
 room_id1 = room_manager.create_new_room('Tic-Tac-Toe')
 is_success = room_manager.player_join_room('1', room_id1)
 is_success = room_manager.player_join_room('2', room_id1)
@@ -48,7 +49,7 @@ def testCookies():
     response.set_cookie('ijojojioj', player_id)
     return response
 #test————————————————————————————————
-
+'''
 
 @app.route('/newplayer', methods=['GET'])
 def new_player_id():
@@ -126,19 +127,15 @@ def create_new_room():
         response = jsonify(success=False, message="Already in a room")
         return response
     
-    if has_password:
-        print("Room has Password")
-        password = data['password']
-        print(password)
-    
-    
-    room_id = room_manager.create_new_room(game_type)
-    is_success = room_manager.player_join_room(player_id, room_id)
+    password = data['password'] if has_password else ""
+    room_id = room_manager.create_new_room(room_name, game_type, has_password, password)
+    is_success = room_manager.player_join_room(player_id, room_id, password)
     if is_success:
         player_manager[player_id] = room_id
         response = jsonify(success=True, message="Create successfully.", room_id=room_id)
     else:
-        response = jsonify(success=False, message="Fail to create room")    
+        response = jsonify(success=False, message="Fail to create room")   
+  
     return response
 
 
