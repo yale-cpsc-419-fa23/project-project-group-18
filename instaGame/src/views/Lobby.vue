@@ -2,11 +2,11 @@
   <div>
     <!-- Top Bar -->
     <v-row class="top-bar">
-      <v-col cols="8" class="logo-col">
+      <v-col cols="10" class="logo-col">
         <!-- <img src="path" alt="Logo" /> -->
       </v-col>
 
-      <v-col cols="4" class="login-btn-col">
+      <v-col cols="2" class="login-btn-col">
         <!-- Login -->
         <div v-if="userName" class="user-name-display">
           <v-menu v-model="menu" :close-on-content-click="false">
@@ -30,10 +30,8 @@
       <v-col cols="6">
         <RoomList />
       </v-col>
-
-      <v-col cols="1"></v-col>
       
-      <v-col cols="4" class="leaderboard-col">
+      <v-col cols="6" class="leaderboard-col">
         <LeaderBoard />
       </v-col>
 
