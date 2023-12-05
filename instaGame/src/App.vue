@@ -31,8 +31,8 @@ watchEffect(() => {
 <style scoped>
 #top-left-icon {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 1%;
+  left: 15%;
   max-width: 50px !important;
   max-height: 50px !important;
   /* width: 50px; 
