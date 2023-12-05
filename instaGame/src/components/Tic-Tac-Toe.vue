@@ -1,5 +1,5 @@
 <template>
-	<div id="tictactoe">
+	<div id="gameContainer">
 		<canvas id="renderCanvas" ref="renderCanvas"></canvas>
 	</div>
 </template>
@@ -9,6 +9,7 @@
 	import 'babylonjs-loaders';
 	import { ref } from 'vue';
 	import { useRouter } from 'vue-router';
+	import LoadingScreen from '../scripts/LoadingScreen.js';
 	
 	const router = useRouter();
 	const gameType = ref('');
@@ -30,10 +31,18 @@
 		initialize() {
 			const canvas = this.$refs.renderCanvas;
 			engine = new BABYLON.Engine(canvas, true);
+			var loadingScreen = new LoadingScreen("I'm loading!!");
+			engine.loadingScreen = loadingScreen;
+			engine.displayLoadingUI();
+			
 			scene = this.createScene(canvas, engine);
 
 			this.$nextTick(() => {
-				player_id = this.player_id;
+				let userName = localStorage.getItem('userName') || '';
+				if (userName != '')
+					player_id = userName;
+				else
+					player_id = this.player_id;
 				room_id = this.room_id;
 				this.socket.on('gamestart_message', (data) => {
 				this.updateMessage(data.message);
@@ -221,7 +230,7 @@
 </script>
 
 <style scoped>
-	#tictactoe {
+	#gameContainer {
 		display: flex;
 		justify-content: center;
 		align-items: center;

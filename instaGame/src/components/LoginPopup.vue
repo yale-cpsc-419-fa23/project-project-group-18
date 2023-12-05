@@ -96,7 +96,7 @@ const handleRegister = () => {
     headers: {
     'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username: username.value, password: password, email:email })
+    body: JSON.stringify({ username: username.value, password: password.value, email:email.value })
   })
   .then(response => response.json())
   .then(data => {
