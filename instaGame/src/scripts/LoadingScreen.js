@@ -40,7 +40,7 @@ function LoadingScreen(text) {
   LoadingScreen.prototype.hideLoadingUI = function() {
 			setTimeout(function(){
         document.getElementById("loadingScreenDiv").style.display = "none";
-			}, 3000);
+			}, 1000);
   };
 
   export default LoadingScreen;
