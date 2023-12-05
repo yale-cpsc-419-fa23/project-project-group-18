@@ -70,6 +70,7 @@ def userlogin():
     if not user_id or not password:
         response = jsonify(success=False, message="Empty username or password.")
         return response
+    print(user_id, password)
     is_success = user_login(user_id, password)
     if is_success:
         response = jsonify(success=True, message="Login successfully.", user_id=user_id)
@@ -86,6 +87,7 @@ def userregister():
     if not user_id or not password or not email:
         response = jsonify(success=False, message="Empty username/password/email address.")
         return response
+    print(user_id, password, email)
     is_success = user_register(user_id, password, email)
     if is_success:
         response = jsonify(success=True, message="Register successfully.", user_id=user_id)
