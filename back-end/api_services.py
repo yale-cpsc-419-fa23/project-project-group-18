@@ -146,10 +146,14 @@ def join_room():
     data = request.json
     player_id = data['player_id']
     room_id = data['room_id']
+    has_password = data['has_password']
     if not player_id or not room_id:
         response = jsonify(success=False, message="Illegal player_id or room_id")
     else:
-        is_success = room_manager.player_join_room(player_id, room_id)
+        password = ""
+        if has_password:
+            password = data['password']
+        is_success = room_manager.player_join_room(player_id, room_id, password)
         if is_success:
             player_manager[player_id] = room_id
             response = jsonify(success=True, message="Join successfully.", room_id=room_id)
