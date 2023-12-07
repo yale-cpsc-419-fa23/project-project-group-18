@@ -17,25 +17,25 @@ player_manager = {}
 sid_manager = {}
 
 #test————————————————————————————————
-'''
-room_id1 = room_manager.create_new_room('Tic-Tac-Toe')
+
+room_id1 = room_manager.create_new_room('TT room', 'Tic-Tac-Toe', False, "")
 is_success = room_manager.player_join_room('1', room_id1)
 is_success = room_manager.player_join_room('2', room_id1)
 
-room_id2 = room_manager.create_new_room('Tic-Tac-Toe')
-is_success = room_manager.player_join_room('3', room_id2)
+room_id2 = room_manager.create_new_room('GOGOOG', 'Gomoku', True, '123')
+is_success = room_manager.player_join_room('3', room_id2, '123')
 
 
-room_id3 = room_manager.create_new_room('Tic-Tac-Toe')
-is_success = room_manager.player_join_room('4', room_id3)
+room_id3 = room_manager.create_new_room('妹妹陪玩', 'Gomoku', True, '123')
+is_success = room_manager.player_join_room('4', room_id3, '123')
 
 
-room_id4 = room_manager.create_new_room('Tic-Tac-Toe')
+room_id4 = room_manager.create_new_room('TT\'s Game', 'Tic-Tac-Toe', False, "")
 is_success = room_manager.player_join_room('5', room_id4)
 is_success = room_manager.player_join_room('6', room_id4)
 
-room_id5 = room_manager.create_new_room('Tic-Tac-Toe')
-is_success = room_manager.player_join_room('7', room_id5)
+room_id5 = room_manager.create_new_room('ininsbb', 'Tic-Tac-Toe', True, '123')
+is_success = room_manager.player_join_room('7', room_id5, '123')
 
 @app.route('/testcookies', methods=['POST'])
 def testCookies():
@@ -49,7 +49,7 @@ def testCookies():
     response.set_cookie('ijojojioj', player_id)
     return response
 #test————————————————————————————————
-'''
+
 
 @app.route('/newplayer', methods=['GET'])
 def new_player_id():

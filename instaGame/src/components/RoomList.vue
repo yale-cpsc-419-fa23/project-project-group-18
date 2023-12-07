@@ -1,4 +1,6 @@
 <template>
+  <div>
+
   <v-table fixed-header height="500px">
     <RoomPassword
       v-model="showEnterPassword"
@@ -8,6 +10,15 @@
     <thead>
       <tr>
         <th colspan="3"><h2>Room List</h2></th>
+        <th colspan="6">
+            <v-text-field
+            v-model="searchQuery"
+            label="Search Rooms"
+            single-line
+            clearable
+            class = "search-bar"
+          ></v-text-field>
+        </th>
       </tr>
       <tr>
         <th class="text-right"></th>
@@ -40,6 +51,7 @@
       </tr>
     </tbody>
   </v-table>
+  </div>
 </template>
   
 <script setup>
@@ -130,5 +142,18 @@ td {
   overflow:hidden;
   white-space: nowrap;
 }
+/* .search-bar .v-text-field__control {
+  height: 20px;
+}
+
+.search-bar .v-text-field__slot {
+  padding-top: 4px; 
+  padding-bottom: 4px;
+}
+
+.search-bar input {
+  height: 100%; 
+  font-size: 0.875rem; 
+} */
 </style>
   
