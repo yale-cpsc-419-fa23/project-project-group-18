@@ -222,7 +222,7 @@ def rejoin_game(data):
     print(f"{player_id} is ready for next game.")
     success = player_rejoin(room_id)
     if success:
-        socketio.emit('rejoin_message', {'is_success': success, 'message': f"{player_id} is ready for next game."}, room=room_id)
+        socketio.to(request.sid).emit('rejoin_message', {'is_success': success, 'message': f"{player_id} is ready for next game."}, room=room_id)
         check_game_start(room_id)
     else:
         socketio.emit('rejoin_message', {'is_success': success, 'message': f"{player_id} fails to rejoin the room."}, room=room_id)
