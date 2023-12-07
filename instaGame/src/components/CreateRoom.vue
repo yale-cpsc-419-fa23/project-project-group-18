@@ -100,10 +100,12 @@ const createNewRoom = async () => {
     userName = get_cookie('player_id');
   }
   let game_type = gameType.value;
-  console.log(game_type);
+  // console.log(game_type);
 
   let hasPassword = false;
-  if (password) {
+  // console.log(hasPassword)
+  if (password.value) {
+    // console.log(password.value)
     hasPassword = true;
   }
 
@@ -120,11 +122,11 @@ const createNewRoom = async () => {
     requestBody = JSON.stringify({ 
         player_id: userName, 
         game_type: game_type, 
-        room_name: name, 
-        has_password: hasPassword
+        room_name: name.value, 
+        has_password: hasPassword,
     })
   }
-
+  console.log(requestBody)
   fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/createroom`, {
     method: 'POST',
     headers: {
@@ -135,10 +137,14 @@ const createNewRoom = async () => {
   .then(response => response.json())
   .then(data => {
     console.log(data)
-    let room_id = data.room_id;
-    document.cookie = `room_id=${room_id}`;
-    console.log(room_id)
-    router.push({ path: '/game', query: { gameType: game_type } });
+    if (data.success) {
+      let room_id = data.room_id;
+      document.cookie = `room_id=${room_id}`;
+      console.log(room_id)
+      router.push({ path: '/game', query: { gameType: game_type } });
+    } else {
+      alert(data.message);
+    }
   })
   .catch(error => console.error('Error:', error));
 };

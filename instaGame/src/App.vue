@@ -39,11 +39,16 @@ watchEffect(() => {
   height: 50px;  */
 }
 
+#top-left-icon :hover {
+  cursor: pointer;
+}
+
 #top-left-icon svg {
   width: 100%;
   height: 100%;
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* This ensures the SVG scales within its container */
+  object-fit: contain;
 }
+
 </style>
