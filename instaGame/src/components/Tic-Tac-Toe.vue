@@ -13,7 +13,7 @@
 	
 	const router = useRouter();
 	const gameType = ref('');
-	let cells = [];
+	let cells = [], pieces = [];
 	let engine, scene, currentPiece, player_id, room_id;
 	let checkerboardTask, circleTask, crossTask, turn, vm;
 	export default {
@@ -86,7 +86,19 @@
 				this.updateMessage('You Lose!');
 			}
 			this.disableCellClickEvents();
-			this.$emit('showLeave');
+			this.$emit('showButtons');
+			this.socket.off('gamestart_message')
+			this.socket.on('gamestart_message', (data) => {
+				this.updateMessage(data.message);
+				currentPiece = data.piece_map[player_id];
+				cells.forEach(cell => {
+					cell.occupied = false;
+				});
+				pieces.forEach(piece => {
+					piece.dispose();
+				});
+				this.run();
+			});
 		},
 		disableCellClickEvents() {
 			turn = false;
@@ -119,6 +131,7 @@
 				circle.scaling.y *= 0.3;
 				circle.scaling.z *= 0.6;
 				circle.setEnabled(true);
+				pieces.push(circle);
 			} else if (piece == 'X') {
 				var cross = crossTask.loadedMeshes[0].getChildren()[0].createInstance();
 				cross.position = position;
@@ -128,6 +141,7 @@
 				cross.rotationQuaternion = null;
 				cross.rotation.x = BABYLON.Tools.ToRadians(90);
 				cross.rotation.z = BABYLON.Tools.ToRadians(45);
+				pieces.push(cross);
 			}
 		},
 		updateMessage(newMessage) {

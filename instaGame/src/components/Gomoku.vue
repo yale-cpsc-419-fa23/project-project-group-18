@@ -13,7 +13,7 @@
 	
 	const router = useRouter();
 	const gameType = ref('');
-	let cells = [];
+	let cells = [], pieces = [];
 	let engine, scene, currentPiece, player_id, room_id;
 	let gomokuboardTask, pieceTask, turn, vm;
 	export default {
@@ -86,7 +86,19 @@
 				this.updateMessage('You Lose!');
 			}
 			this.disableCellClickEvents();
-			this.$emit('showLeave');
+			this.$emit('showButtons');
+			this.socket.off('gamestart_message')
+			this.socket.on('gamestart_message', (data) => {
+				this.updateMessage(data.message);
+				currentPiece = data.piece_map[player_id];
+				cells.forEach(cell => {
+					cell.occupied = false;
+				});
+				pieces.forEach(piece => {
+					piece.dispose();
+				});
+				this.run();
+			});
 		},
 		disableCellClickEvents() {
 			turn = false;
@@ -121,6 +133,7 @@
 			newPiece.scaling.x /= 5.0;
 			newPiece.scaling.y *= 0.3;
 			newPiece.scaling.z /= 5.0;
+			pieces.push(newPiece);
 		},
 		updateMessage(newMessage) {
 			this.$emit('updateMessage', newMessage);
