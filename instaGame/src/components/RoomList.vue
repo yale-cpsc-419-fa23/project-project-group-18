@@ -10,8 +10,10 @@
         <th colspan="3"><h2>Room List</h2></th>
       </tr>
       <tr>
+        <th class="text-right"></th>
         <th class="text-left">Room Name</th>
         <th class="text-left">Room ID</th>
+        <th class="text-left">Game</th>
         <th class="text-left">Players</th>
         <th class="text-left"></th>
       </tr>
@@ -20,11 +22,14 @@
       <tr v-for="room in roomList" :key="room.room_id">
         <td>
           <v-icon v-if="room.has_password" icon="mdi-lock"></v-icon>
+        </td>
+        <td>
           <!-- <v-btn v-if="room.has_password">lock</v-btn> -->
           <!-- <v-img src="../assets/instaGame-light.svg" v-if="room.has_password" width="20px" height="20px"></v-img> -->
           {{ room.room_name }}
         </td>
         <td>{{ room.room_id }}</td>
+        <td>{{ room.game_type }}</td>
         <td>{{ room.player_count }}/{{ room.max_player_count }}</td>
         <td>
           <v-btn class="join-button" @click="joinRoom(room.room_id, room.game_type, room.has_password)">

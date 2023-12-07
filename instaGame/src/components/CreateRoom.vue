@@ -137,10 +137,14 @@ const createNewRoom = async () => {
   .then(response => response.json())
   .then(data => {
     console.log(data)
-    let room_id = data.room_id;
-    document.cookie = `room_id=${room_id}`;
-    console.log(room_id)
-    router.push({ path: '/game', query: { gameType: game_type } });
+    if (data.success) {
+      let room_id = data.room_id;
+      document.cookie = `room_id=${room_id}`;
+      console.log(room_id)
+      router.push({ path: '/game', query: { gameType: game_type } });
+    } else {
+      alert(data.message);
+    }
   })
   .catch(error => console.error('Error:', error));
 };

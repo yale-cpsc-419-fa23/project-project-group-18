@@ -6,15 +6,15 @@
         <th colspan="3"><h2>Leader Board</h2></th>
       </tr>
       <tr>
-        <th>Player ID</th>
-        <th>Ranking</th>
+        <th>#</th>
+        <th>Player</th>
         <th>Score</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="row, index in leaderboardData" :key="row.player_id">
-        <td>{{ row.player_id.slice(0,6) }}</td>
         <td>{{ index + 1 }}</td>
+        <td>{{ row.player_id.slice(0,6) }}</td>
         <td>{{ row.score }}</td>
       </tr>
     </tbody>
