@@ -16,7 +16,7 @@
               </v-btn> -->
               Welcome, <span class="user-name" v-bind="props" @click="showProfileMenu">{{ userName }}</span>
             </template>
-            <profile-menu @logout="handleLogout"></profile-menu>
+            <profile-menu @logout="handleLogout" :rank="rank"></profile-menu>
           </v-menu>
           
         </div>
@@ -37,8 +37,8 @@
 
     </v-row>
     <v-row>
-      <v-col cols="2"></v-col>
-      <v-col cols="4">
+      <v-col cols="3"></v-col>
+      <v-col cols="5">
         <!-- <SelectGame /> -->
         <v-btn variant="tonal" @click="showCreateRoomModal">
           Create Room
@@ -72,6 +72,7 @@ const showLoginPopup = ref(false);
 const showCreateRoom = ref(false);
 const menu = ref(false);
 const userName = ref('');
+let rank = ref(0);
 
 const showCreateRoomModal = () => {
   showCreateRoom.value = true;
@@ -88,6 +89,22 @@ const showLogin = () => {
 
 const showProfileMenu = () => {
   menu.value = true;
+  fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/getRanking?player_id=${encodeURIComponent(userName.value)}`, {
+    method: 'GET',
+    headers: {
+    'Content-Type': 'application/json',
+    },
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      console.log(data);
+      rank.value = data.ranking;
+    } else {
+      alert(data.message);
+    }
+  })
+  .catch(error => console.error('Error:', error));
   console.log("show profile");
 }
 
