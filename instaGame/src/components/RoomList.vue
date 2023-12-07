@@ -14,7 +14,9 @@
     <tbody>
       <tr v-for="room in roomList" :key="room.room_id">
         <td>
-          <!-- <v-icon v-if="room.has_password" dark>fas fa-lock</v-icon> -->
+          <v-icon v-if="room.has_password" icon="mdi-lock"></v-icon>
+          <!-- <v-btn v-if="room.has_password">lock</v-btn> -->
+          <!-- <v-img src="../assets/instaGame-light.svg" v-if="room.has_password" width="20px" height="20px"></v-img> -->
           {{ room.room_name }}
         </td>
         <td>{{ room.room_id }}</td>
@@ -78,4 +80,13 @@ onMounted(() => {
   setInterval(fetchRooms, 3000);
 });
 </script>
+<style scoped>
+table {
+  table-layout: fixed;
+}
+td {
+  overflow:hidden;
+  white-space: nowrap;
+}
+</style>
   
