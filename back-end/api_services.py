@@ -124,11 +124,12 @@ def create_new_room():
     if not player_id:
         response = jsonify(success=False, message="Illegal player ID")
         return response
-    
+
     if player_id in player_manager:
+        print('xxxx')
         response = jsonify(success=False, message="Already in a room")
         return response
-    
+
     password = data['password'] if has_password else ""
     room_id = room_manager.create_new_room(room_name, game_type, has_password, password)
     is_success = room_manager.player_join_room(player_id, room_id, password)
@@ -188,7 +189,6 @@ def player_join_room(data):
     print(f"{player_id} enter the room {room_id}")
     flask_socketio.join_room(room_id)  
     socketio.emit('joinroom_message', {'is_success': True, 'message': f"{player_id} enter the room {room_id}"}, room=room_id)
-
     check_game_start(room_id)
 
 @socketio.on('makemove')
@@ -209,6 +209,18 @@ def player_make_move(data):
     else:   
         turn_start(room_id)
 
+@socketio.on('restart')
+def rejoin_game(data):
+    player_id = data['player_id']
+    room_id = data['room_id']
+    print(f"{player_id} is ready for next game.")
+    success = player_rejoin(room_id)
+    if success:
+        socketio.emit('rejoin_message', {'is_success': success, 'message': f"{player_id} is ready for next game."}, room=room_id)
+        check_game_start(room_id)
+    else:
+        socketio.emit('rejoin_message', {'is_success': success, 'message': f"{player_id} fails to rejoin the room."}, room=room_id)
+
 @socketio.on('disconnect')
 def handle_disconnect():
     print('Client disconnected', request.sid)
@@ -225,7 +237,7 @@ def handle_disconnect():
 
 def check_game_start(room_id):
     room = room_manager.get_room(room_id)
-    if room and room.check_full():
+    if room and room.check_all_ready():
         time.sleep(1)    
         piece_map = room.start_game()
         socketio.emit('gamestart_message', {'piece_map': piece_map, 'message': f"Tic Tac Toe Game Starts"}, room=room_id)
@@ -264,6 +276,14 @@ def check_game_over(room_id):
         print(f"No such a room:{room_id}.")
     return False, ""
     
+def player_rejoin(room_id):
+    room = room_manager.get_room(room_id)
+    if room:
+        room.player_rejoin()
+        return True
+    else:
+        print(f"No such a room:{room_id}.")
+    return False
 
 def game_over(room_id):
     room = room_manager.get_room(room_id)

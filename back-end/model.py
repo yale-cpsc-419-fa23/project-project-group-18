@@ -13,13 +13,19 @@ game_type_mapping = {
     "Gomoku": Gomoku,
 }
 
+max_player_mapping = {
+    "Tic-Tac-Toe": 2,
+    "Gomoku": 2,
+}
+
 
 class GameRoom:
     def __init__(self, id, room_name, game_type, has_password, password):
         self.id = id
         self.__player_count = 0
         self.__player_list = []
-        self.__max_player_count = 2
+        self.__max_player_count = max_player_mapping[game_type]
+        self.__player_ready_count = 0
         self.__game_state = GameState.WAITING
         self.__password = ""
         self.room_name = room_name
@@ -35,6 +41,7 @@ class GameRoom:
         if self.is_join_available():
             self.__player_count += 1
             self.__player_list.append(player)
+            self.__player_ready_count +=1
             print(f"{player} joins the room {self.id}.")
             message = f"{player} joins the room {self.id}."
             return True, message
@@ -49,6 +56,7 @@ class GameRoom:
             if password == self.__password:
                 self.__player_count += 1
                 self.__player_list.append(player)
+                self.__player_ready_count += 1
                 print(f"{player} joins the room {self.id}.")
                 message = f"{player} joins the room {self.id}."
                 return True, message
@@ -64,6 +72,7 @@ class GameRoom:
         if player in self.__player_list:
             self.__player_list.remove(player)
             self.__player_count -=1
+            self.__player_ready_count -= 1
             print(f"{player} leaves the room.")
             if self.__game_state == GameState.ONGOING:
                 self.__game_state = GameState.END
@@ -82,21 +91,31 @@ class GameRoom:
         else:
             return True
     
+    def player_rejoin(self):
+        self.__player_ready_count += 1
+    
     def check_full(self):
         return self.__player_count == self.__max_player_count
     
     def check_empty(self):
         return self.__player_count == 0
+    
+    def check_all_ready(self):
+        return self.__player_ready_count == self.__max_player_count
 
     def start_game(self):
-        print("Game start.")
-        self.__game_state = GameState.ONGOING
-        self.game.set_players(self.__player_list[0], self.__player_list[1])
-        return self.game.get_player_piece_map()
+        if self.check_all_ready():
+            print("Game start.")
+            self.__game_state = GameState.ONGOING
+            self.game.set_players(self.__player_list[0], self.__player_list[1])
+            return self.game.get_player_piece_map()
+        else:
+            print("Players not ready.")
     
     def game_over(self):
         print("Game over.")
         self.__game_state = GameState.END
+        self.__player_ready_count = 0
         self.game.game_over()
     
     def if_has_password(self):
