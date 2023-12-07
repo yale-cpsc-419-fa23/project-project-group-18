@@ -19,7 +19,7 @@ function LoadingScreen(text) {
     this.customLoadingScreenCss = `
       #loadingScreenDiv {
         position: absolute;
-        width: 88%;
+        width: 144%;
         height: 81%;
         text-align: center;
         font-size: 50px;

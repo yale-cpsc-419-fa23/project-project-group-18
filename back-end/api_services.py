@@ -176,7 +176,7 @@ def join_room_with_password():
 
 @app.route('/getRanking', methods=['GET'])
 def get_ranking():
-    data = request.json
+    data = request.args
     player_id = data['player_id']
     ranking = user_ranking(player_id)
     response = jsonify(success=True, message="You get your ranking.", ranking=ranking)
