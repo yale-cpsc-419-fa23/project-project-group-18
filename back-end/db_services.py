@@ -57,6 +57,28 @@ def user_register(username, password, email):
     close_connection(connection, cursor)
     return is_success
 
+def user_ranking(user_id):
+    connection, cursor = connect_db()
+    params = {
+        'user_id' : str(user_id),
+    }
+    query = '''
+    SELECT COALESCE(
+       (SELECT rank FROM
+        (SELECT
+            player_id,
+            RANK() OVER (ORDER BY score DESC) as rank
+            FROM scores)
+        WHERE player_id = :user_id),
+        (SELECT COUNT(*) FROM scores)
+    ) AS result;
+    '''
+    cursor.execute(query, params)
+    user = cursor.fetchone()
+    ranking = user[0]
+
+    close_connection(connection, cursor)
+    return ranking
     
 
 def top_n_players(n=10)->list[tuple]:
@@ -131,5 +153,7 @@ def close_connection(connection: sqlite3.Connection, cursor: sqlite3.Cursor):
 
 
 if __name__ == '__main__':
-    user_register('sauki3', '123456', 'sauki@yale.edu')
-    user_login('sauki3', '123456')
+    #user_register('sauki3', '123456', 'sauki@yale.edu')
+    #user_login('sauki3', '123456')
+    x=  user_ranking('sauki')
+    print(x)

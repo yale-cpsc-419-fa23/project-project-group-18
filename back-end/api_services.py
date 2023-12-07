@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import flask_socketio
 import uuid
-from db_services import top_n_players, add_player, update_score, user_login, user_register
+from db_services import top_n_players, add_player, update_score, user_login, user_ranking, user_register
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -141,7 +141,6 @@ def create_new_room():
   
     return response
 
-
 @app.route('/joinroom', methods=['POST'])
 def join_room():
     data = request.json
@@ -174,7 +173,14 @@ def join_room_with_password():
         else:
             response = jsonify(success=False, message=message)
     return response
-   
+
+@app.route('/getRanking', methods=['GET'])
+def get_ranking():
+    data = request.json
+    player_id = data['player_id']
+    ranking = user_ranking(player_id)
+    response = jsonify(success=True, message="You get your ranking.", ranking=ranking)
+    return response
    
 
 @socketio.on('connect')
