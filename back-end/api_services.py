@@ -158,7 +158,7 @@ def join_room():
     return response
 
 @app.route('/joinroompassword', methods=['POST'])
-def join_room():
+def join_room_with_password():
     data = request.json
     player_id = data['player_id']
     room_id = data['room_id']
@@ -166,12 +166,12 @@ def join_room():
     if not player_id or not room_id:
         response = jsonify(success=False, message="Illegal player_id or room_id")
     else:
-        is_success = room_manager.player_join_room(player_id, room_id, password)
+        is_success, message = room_manager.player_join_room(player_id, room_id, password)
         if is_success:
             player_manager[player_id] = room_id
-            response = jsonify(success=True, message="Join successfully.", room_id=room_id)
+            response = jsonify(success=True, message=message, room_id=room_id)
         else:
-            response = jsonify(success=False, message="Fail to join room")
+            response = jsonify(success=False, message=message)
     return response
    
    

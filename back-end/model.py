@@ -31,27 +31,34 @@ class GameRoom:
         print(f"Game room {id} created.")
     
     def join_player(self, player):
+        message = ""
         if self.is_join_available():
             self.__player_count += 1
             self.__player_list.append(player)
             print(f"{player} joins the room {self.id}.")
-            return True
+            message = f"{player} joins the room {self.id}."
+            return True, message
         else:
             print("Fail to join the room.")
-            return False
+            message = "Fail to join the room"
+            return False, message
     
     def join_player_with_password(self, player, password):
+        message = ""
         if self.is_join_available():
             if password == self.__password:
                 self.__player_count += 1
                 self.__player_list.append(player)
                 print(f"{player} joins the room {self.id}.")
-                return True
+                message = f"{player} joins the room {self.id}."
+                return True, message
             else:
                 print("Password wrong.")
+                message = "Password wrong."
         else:
             print("Fail to join the room.")
-        return False
+            message = "Fail to join the room."
+        return False, message
 
     def leave_player(self, player):
         if player in self.__player_list:
@@ -132,16 +139,18 @@ class GameRoomManager:
         return new_room_id
     
     def player_join_room(self, player_id, room_id, password = ""):
+        message = ""
         if(room_id not in self.rooms):
             print(f"Room: {room_id} is not existed.")
-            return False
+            message = f"Room: {room_id} is not existed."
+            return False, message
         else:
             room = self.rooms[room_id]
             if room.if_has_password():
-                success = room.join_player_with_password(player_id, password)
+                success, message= room.join_player_with_password(player_id, password)
             else:   
-                success = room.join_player(player_id)
-            return success
+                success, message= room.join_player(player_id)
+            return success, message
 
     
     def player_leave_room(self, player_id, room_id):
