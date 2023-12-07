@@ -1,14 +1,21 @@
 <template>
 	<div id="container">
 		<template v-if="this.gameType === 'Tic-Tac-Toe'">
-			<TicTacToe :socket="socket" :room_id="room_id" :player_id="player_id" :message="message" @updateMessage="updateMessage" @showLeave="showLeave"/>
+			<TicTacToe :socket="socket" :room_id="room_id" :player_id="player_id" :message="message" @updateMessage="updateMessage" @showButtons="showButtons"/>
 		</template>
 		<template v-else-if="this.gameType === 'Gomoku'">
-			<Gomoku :socket="socket" :room_id="room_id" :player_id="player_id" :message="message" @updateMessage="updateMessage" @showLeave="showLeave"/>
+			<Gomoku :socket="socket" :room_id="room_id" :player_id="player_id" :message="message" @updateMessage="updateMessage" @showButtons="showButtons"/>
 		</template>
-		<p id="message">{{ message }}</p>
-		<button id="leave-button" @click="leaveRoom" v-show="leaveButtonVisible">Leave</button>
+		<v-label id="message">{{ message }}</v-label>
 	</div>
+	<v-row class="button-row">
+		<v-col cols="4">
+			<v-btn id="leave-button" @click="leaveRoom" v-show="leaveButtonVisible">Leave</v-btn>
+		</v-col>
+		<v-col cols="4">
+			<v-btn id="restart-button" @click="restartRoom" v-show="restartButtonVisible">Restart</v-btn>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
@@ -27,6 +34,7 @@
         return {
             message: 'Inactive Game Room',
             leaveButtonVisible: false,
+			restartButtonVisible: false,
             socket: io.connect(SERVER_ADDRESS.IP + ':' + SERVER_ADDRESS.PORT),
             player_id: get_cookie('player_id'),
             room_id: get_cookie('room_id'),
@@ -55,11 +63,22 @@
             socket.disconnect();
             window.location.href = '/';
         },
+        restartRoom() {
+			socket.emit('restart', { player_id: player_id, room_id: room_id });
+			socket.on('rejoin_message', (data) => {
+                if (data.is_success === true) {
+                    this.message = 'Waiting for players to join...';		
+					this.leaveButtonVisible = false;
+					this.restartButtonVisible = false;
+                }
+            });
+        },
 		updateMessage(newMessage) {
 			this.message = newMessage;
 		},
-		showLeave() {
+		showButtons() {
 			this.leaveButtonVisible = true;
+			this.restartButtonVisible = true;
 		}
     },
     components: { TicTacToe, Gomoku }
@@ -73,11 +92,6 @@
 		align-items: center;
 		height: 100vh;
 	}
-	#renderCanvas {
-		width: 144%;
-		height: 81%;
-		padding: 0;
-	}
 	#message {
 		position: absolute;
 		bottom: 10vh;
@@ -87,20 +101,20 @@
 		user-select: none;
 	}
 
-	#leave-button {
-		padding: 10px 20px;
-		font-size: 16px;
-		background-color: #3498db;
-		color: white;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
+	.button-row {
 		position: absolute;
-		bottom: 3vh;
+		bottom: 0;
+		width: 80%;
+		justify-content: center;
+		align-items: center;
+		display: flex;
 	}
-	
-	#leave-button:hover {
-		background-color: #2980b9;
+
+	#leave-button,
+	#restart-button {
+		font-size: 16px;
+		margin-top: -50px;
+		background-color: #266f9f;
+		border-radius: 5px;
 	}
 </style>

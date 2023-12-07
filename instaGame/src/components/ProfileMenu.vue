@@ -2,7 +2,7 @@
     <v-card min-width="250">
         <v-list>
           <v-list-item
-            prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
+            prepend-avatar="https://avatars.githubusercontent.com/t/8715767?s=116&v=4"
           >
             <template v-slot:title>{{ userName }}</template>
           </v-list-item>
@@ -14,7 +14,7 @@
           <v-list-item>
             <v-row>
               <v-col cols="8" class="rank-description"> Ranking </v-col>
-              <v-col cols="4" class="rank-number"> 343 </v-col>
+              <v-col cols="4" class="rank-number"> {{ rank }} </v-col>
             </v-row>
           </v-list-item>
         </v-list>
@@ -28,10 +28,11 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, defineProps} from 'vue';
 
 const userName = ref('');
 const emit = defineEmits(['logout']);
+const props = defineProps(['rank']);
 
 const logout = () => {
     // localStorage.removeItem('userName');
