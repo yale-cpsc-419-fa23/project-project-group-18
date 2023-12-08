@@ -118,6 +118,7 @@ const sendJoinRoomRequest = (roomId, roomType) => {
     if (data.success) {
       let room_id = data.room_id;
       document.cookie = `room_id=${room_id}`;
+      router.push({ path: '/game', query: { gameType: data.roomType } });
       return { success: true, roomType: roomType, roomId: room_id };
     } else {
       return { success: false, message: data.message };
