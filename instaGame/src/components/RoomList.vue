@@ -101,10 +101,9 @@ const joinRoom = (roomId, roomType, has_password) => {
 };
 
 const sendJoinRoomRequest = (roomId, roomType) => {
-  let player_id = localStorage.getItem('userName');
+  let player_id = localStorage.getItem('userName'); 
   if (!player_id) {
       player_id = get_cookie('player_id');
-      return Promise.reject('No player ID found');
   }
   return fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/joinroom`, {
     method: 'POST',
@@ -118,7 +117,6 @@ const sendJoinRoomRequest = (roomId, roomType) => {
     if (data.success) {
       let room_id = data.room_id;
       document.cookie = `room_id=${room_id}`;
-      router.push({ path: '/game', query: { gameType: data.roomType } });
       return { success: true, roomType: roomType, roomId: room_id };
     } else {
       return { success: false, message: data.message };
