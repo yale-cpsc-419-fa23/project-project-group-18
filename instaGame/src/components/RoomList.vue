@@ -104,7 +104,7 @@ const sendJoinRoomRequest = (roomId, roomType) => {
   let player_id = localStorage.getItem('userName');
   if (!player_id) {
       player_id = get_cookie('player_id');
-      return;
+      return Promise.reject('No player ID found');
   }
   return fetch(`http://${SERVER_ADDRESS.IP}:${SERVER_ADDRESS.PORT}/joinroom`, {
     method: 'POST',
