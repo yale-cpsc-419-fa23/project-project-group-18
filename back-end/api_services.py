@@ -18,11 +18,11 @@ sid_manager = {}
 
 #test————————————————————————————————
 
-room_id1 = room_manager.create_new_room('TT room', 'Tic-Tac-Toe', False, "")
+room_id1 = room_manager.create_new_room('GOGOGO', 'Tic-Tac-Toe', False, "")
 is_success = room_manager.player_join_room('1', room_id1)
 is_success = room_manager.player_join_room('2', room_id1)
 
-room_id2 = room_manager.create_new_room('GOGOOG', 'Gomoku', True, '123')
+room_id2 = room_manager.create_new_room('1v1 $100', 'Gomoku', True, '123')
 is_success = room_manager.player_join_room('3', room_id2, '123')
 
 
