@@ -10,7 +10,6 @@ InstaGame is an interactive online gaming platform where users can join and play
 - Real-time gameplay
 - Leaderboard system
 - Secure login and registration system
-- Room search functionality
 
 ## Installation
 
