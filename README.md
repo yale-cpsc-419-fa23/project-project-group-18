@@ -1,44 +1,66 @@
-## **"InstaGame: Online Web Game Room"**
+![InstaGame Logo](/assets/instaGame_name_icon.svg)
 
-### 1. Objective
+# InstaGame
 
-- Instant and convenient game platform.
-- Create a platform that allows users to play different games in various virtual game rooms.
-- Provide a seamless and user-friendly interface for game selection and interaction.
+## Introduction
+InstaGame is an interactive online gaming platform where users can join and play various games in real-time. It features a variety of multiplayer games, room creation options, leaderboards, and more.
 
-### 2. Project Description & Features
+## Features
+- Multiplayer gaming rooms
+- Real-time gameplay
+- Leaderboard system
+- Secure login and registration system
+- Room search functionality
 
-****************************Main features:****************************
+## Installation
 
-- **User Registration**: Allow users to create profiles with nicknames.
-- **Game Rooms**: Different virtual rooms for (various) games.
-- **Game Selection**: Library or catalog of games available.
-- **Leaderboards**: Display top players for each game.
-- **********Games:**********
-    - Tic-tac-toe
-    - Poker
-    - Gomoku (five in a row)
+To install InstaGame, follow these steps:
 
-**Extended feature:**
+* Clone the repository:
+   ```bash
+   git clone https://github.com/yale-cpsc-419-fa23/project-project-group-18.git
+   ```
 
-- **Live Chat**: Allow users to communicate in-game.
-- **********************************Add friends:********************************** Allow users to add friends. Friends can see each other’s status.
+### Back-end:
+1. Install requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
+2. Navigate to the backend directory:
+    ```bash
+    cd back-end
+    ```
+3. Run the following command to start your backend:
+    ```
+    python run_server.py PORT
+    ```
+4. Find your backend address. After running the above command, the following address will be shown in terminal:
+    ```
+     * Running on all addresses (0.0.0.0)
+     * Running on http://127.0.0.1:5001
+     * Running on http://192.168.4.26:5001
+    ```
+    **IMPORTANT**: You will need to replace your backend address in the frontend ```config.js``` file.
 
-### 3. Methodology
+### Front-end:
+1. Navigate to the project directory:
+    ```bash
+    cd instaGame
+    ```
+2. Replace your backend address in ```config.js```:
+    ```js
+    export const SERVER_ADDRESS = {
+    IP: YOUR_ADDRESS,
+    PORT: YOUR_PORT,
+    };
+    ```
 
-- **Platform**: Web-based
-- **Development Tools**:
-    - Database: sqlite
-    - Backend: Flask, Python
-    - Frontend: PixiJS, Babylon.js
-
-### 4. Challenges
-
-- Graphics Interface
-- Multi-thread programing for game rooms
-
-### 5. Team Members & Roles
-
-- Zhanqi Deng: Team leader and Backend development and Database
-- Chen Gong: Game logic and Backend development
-- Xinchen Yan: Frontend Game and UI Rendering
+3. Install dependencies:
+    ```bash
+    npm install
+    ```
+4. To start the application, run the following command:
+    ```bash
+    npm run dev
+    ```
+5. Open your browser and navigate to http://localhost:xxxx

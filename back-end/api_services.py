@@ -26,7 +26,7 @@ room_id2 = room_manager.create_new_room('1v1 $100', 'Gomoku', True, '123')
 is_success = room_manager.player_join_room('3', room_id2, '123')
 
 
-room_id3 = room_manager.create_new_room('妹妹陪玩', 'Gomoku', True, '123')
+room_id3 = room_manager.create_new_room('Neo\'s Room', 'Gomoku', True, '123')
 is_success = room_manager.player_join_room('4', room_id3, '123')
 
 
