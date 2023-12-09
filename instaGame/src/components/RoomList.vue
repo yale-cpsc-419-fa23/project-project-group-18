@@ -10,7 +10,7 @@
     <thead>
       <tr>
         <th colspan="3"><h2>Room List</h2></th>
-        <th colspan="6">
+        <!-- <th colspan="6">
             <v-text-field
             v-model="searchQuery"
             label="Search Rooms"
@@ -18,7 +18,7 @@
             clearable
             class = "search-bar"
           ></v-text-field>
-        </th>
+        </th> -->
       </tr>
       <tr>
         <th class="text-right"></th>
