@@ -87,7 +87,8 @@
 			}
 			this.disableCellClickEvents();
 			this.$emit('showButtons');
-			this.socket.off('gamestart_message')
+			this.socket.off('gamestart_message');
+			this.socket.off('rejoin_message');
 			this.socket.on('gamestart_message', (data) => {
 				this.updateMessage(data.message);
 				currentPiece = data.piece_map[player_id];
